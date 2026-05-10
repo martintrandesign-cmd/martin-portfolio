@@ -517,7 +517,7 @@ async function sendChat() {
       body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1000, system: SYS, messages: chatHistory })
     });
     const d = await r.json();
-    let rep = d.content?.[0]?.text || 'Something went wrong, try again.';
+    let rep = d.content?.[0]?.text || JSON.stringify(d);
     const hasFwd = rep.includes('[FORWARD]');
     rep = rep.replace('[FORWARD]', '').replace(/—/g, ',').trim();
     typ.remove();
