@@ -340,7 +340,29 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <div class="copilot-scroll">
     <button class="back-btn" onclick="showView('chat')">← Back to portfolio</button>
     <div class="copilot-title">Conversation Skill Gen</div>
-    <div class="copilot-subtitle">Upload a CSV or DOCX of customer support transcripts. The tool reads them, finds the most common intents, scores each one by automation potential, and generates a ready-to-use AI skill spec, complete with conversation flow, response templates, guardrails, and required data points.</div>
+    <div class="copilot-subtitle">Turn raw support transcripts into a complete AI skill spec, ready for engineering to build on.</div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0;">
+      <div style="background:rgba(59,42,26,0.03);border-radius:6px;padding:14px;">
+        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:6px;">01 Upload</div>
+        <div style="font-size:13px;line-height:1.6;opacity:0.65;">Drop in a CSV or DOCX of customer support transcripts.</div>
+      </div>
+      <div style="background:rgba(59,42,26,0.03);border-radius:6px;padding:14px;">
+        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:6px;">02 Analyze</div>
+        <div style="font-size:13px;line-height:1.6;opacity:0.65;">Intents are identified, scored by automation potential, and ranked by impact.</div>
+      </div>
+      <div style="background:rgba(59,42,26,0.03);border-radius:6px;padding:14px;">
+        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:6px;">03 Generate</div>
+        <div style="font-size:13px;line-height:1.6;opacity:0.65;">A full skill spec is produced: responses, escalation rules, data to fetch, how to use it, and API shape for engineering.</div>
+      </div>
+    </div>
+
+    <div style="border-left:2px solid rgba(59,42,26,0.15);padding:10px 14px;margin-bottom:20px;">
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:6px;">Example</div>
+      <div style="font-size:13px;line-height:1.6;opacity:0.65;">A customer asks why their transfer is delayed. The spec tells the AI what data to look up, how to interpret it, and what to say. Once engineering unlocks the required data points, the AI resolves it on its own, no escalation needed, saving the customer time and reducing support volume.</div>
+    </div>
+
+    <div style="font-size:12px;opacity:0.4;margin-bottom:20px;">Need help taking it further? Martin is available for consulting to help your team integrate, build, and ship. <a href="mailto:martintrandesign@gmail.com?subject=Conversation Skill Gen consulting&body=Hi Martin, I tried the Conversation Skill Gen and would love to talk about working together." style="color:var(--text);text-decoration:underline;font-family:var(--font);">Get in touch!</a></div>
 
     <!-- Input state -->
     <div id="cp-input-state">
@@ -348,9 +370,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       <div style="display:flex;align-items:center;gap:10px;margin-top:12px;">
         <button id="analyze-btn" onclick="analyzeTranscripts()" style="display:none;">Analyze transcripts</button>
         <label id="upload-label" style="font-size:12px;border:1px solid rgba(59,42,26,0.2);border-radius:3px;padding:9px 16px;cursor:pointer;opacity:0.6;font-family:var(--font);color:var(--text);">
-          ↑ Upload CSV or DOCX
+          ↑ Upload transcripts to get started — CSV or DOCX
           <input type="file" id="file-upload" accept=".csv,.docx" style="display:none;" onchange="handleFileUpload(event)"/>
         </label>
+        <button onclick="loadDummyTranscripts()" style="font-size:12px;border:1px solid rgba(59,42,26,0.15);border-radius:3px;padding:9px 16px;cursor:pointer;opacity:0.5;font-family:var(--font);color:var(--text);background:transparent;">Test with dummy transcripts</button>
         <span id="upload-status" style="font-size:11px;opacity:0.4;"></span>
       </div>
     </div>
@@ -1008,6 +1031,133 @@ async function handleFileUpload(event) {
 
   // Reset input so same file can be re-uploaded
   event.target.value = '';
+}
+
+function loadDummyTranscripts() {
+  const dummy = `---
+Customer: Hi, I've been trying to log into my account for the past hour and it keeps saying my password is wrong.
+Agent: I'm sorry to hear that. Let me look into your account. Can you confirm the email address on file?
+Customer: Sure, it's jsmith@email.com.
+Agent: Thank you. I can see your account has been temporarily locked after multiple failed attempts. I'll send a password reset link now.
+Customer: Great, thank you.
+
+---
+Customer: I need to dispute a charge on my account. There's a $149 charge from a merchant I don't recognize.
+Agent: I can help with that. Can you tell me the date of the charge and the merchant name shown?
+Customer: It says October 3rd, MerchX Online.
+Agent: Thank you. I've flagged this as a potential unauthorized transaction and opened a dispute. You'll receive a provisional credit within 3 business days while we investigate.
+
+---
+Customer: My wire transfer was supposed to arrive two days ago and it still hasn't shown up.
+Agent: I understand how frustrating that must be. Can I get the reference number for the transfer?
+Customer: It's WT-884729.
+Agent: I can see the wire was sent successfully on our end. The delay may be with the receiving bank. I'd recommend contacting them with the reference number. If it doesn't arrive by tomorrow, call us back and we'll escalate.
+
+---
+Customer: I got a text saying there was suspicious activity on my card. I didn't make those charges.
+Agent: Thank you for reaching out quickly. I'm going to freeze your card right now to prevent further charges. Can you confirm the last four digits of your card?
+Customer: 4471.
+Agent: Got it, card ending in 4471 is now frozen. I'll send you a replacement card and open a fraud claim for the unauthorized charges.
+
+---
+Customer: I want to increase my credit card limit. I've had the card for two years and always pay on time.
+Agent: That's great to hear. I can submit a limit increase request for you. This will trigger a soft credit check that won't affect your credit score. Would you like to proceed?
+Customer: Yes please.
+Agent: Done. You should receive a decision within 24 hours by email.
+
+---
+Customer: I set up direct deposit with my employer but my paycheck hasn't hit my account yet. It's payday.
+Agent: I'm sorry about that. Direct deposits typically post by 9am on the payment date. Can you confirm your routing and account number are correct with your employer?
+Customer: I think so. I used the numbers from my app.
+Agent: Great. If it hasn't posted by end of business today, call us back and we'll trace the deposit. It may also be a first-time processing delay with your employer's payroll system.
+
+---
+Customer: I was charged a $35 overdraft fee but I had money in my savings account. Why didn't you use that?
+Agent: I'm sorry about that. Overdraft protection needs to be linked between your accounts. It looks like it wasn't set up on your account. I can link them now and also request a one-time fee reversal given the circumstances.
+Customer: Yes please do both.
+Agent: Done. Your accounts are now linked and the $35 fee has been reversed.
+
+---
+Customer: I lost my debit card. I need to cancel it and get a new one.
+Agent: Of course. I'll cancel the card right now to protect your account. Would you like to keep your same PIN or set a new one when the replacement arrives?
+Customer: Same PIN is fine.
+Agent: Your old card is now deactivated. A replacement will arrive within 5 to 7 business days. You can still use Apple Pay or Google Pay in the meantime.
+
+---
+Customer: I'm trying to send money to my friend using your app but it keeps saying the transfer failed.
+Agent: I'm sorry to hear that. Can you tell me the amount you're trying to send and the error message you're seeing?
+Customer: $200, and it says payment method declined.
+Agent: That usually means your transfer limit has been reached for the day. Your daily peer-to-peer limit is $500 and it looks like you've already sent $350 today. You can try again tomorrow or request a limit increase.
+
+---
+Customer: I need a letter confirming my account balance for a visa application.
+Agent: Absolutely. I can generate an official balance confirmation letter. Would you like it to reflect today's balance or a specific date?
+Customer: Today's balance please.
+Agent: I'll email it to the address on file within one business hour. Let me know if you need it adjusted.
+
+---
+Customer: I noticed my mortgage payment went up this month. Nobody told me it was changing.
+Agent: I understand your concern. Mortgage payments can change when your escrow account is recalculated annually for property tax or insurance adjustments. I can send you a detailed escrow analysis statement.
+Customer: Please do. This is a significant increase and I want to understand why.
+Agent: I've sent it to your email. If you'd like to speak with a mortgage specialist to go over it in detail, I can schedule a call.
+
+---
+Customer: I applied for a personal loan two weeks ago and haven't heard anything.
+Agent: I apologize for the wait. Let me pull up your application. It looks like we need one more document from you, a recent pay stub from the last 30 days. That may be why it's been on hold.
+Customer: Nobody told me that. Can I just upload it in the app?
+Agent: Yes, you can upload it directly in the documents section of your loan application in the app. Once received, we should have a decision within 2 business days.
+
+---
+Customer: I want to close my checking account. I opened a new one at another bank.
+Agent: I can help with that. Before we close it, I want to make sure there are no pending transactions or automatic payments linked to this account. Do you know if there are any recurring payments set up?
+Customer: I think I moved them all over.
+Agent: Great. I'd recommend waiting one full billing cycle to be safe. Once you're ready, you can close it in the app or I can process it now if you prefer.
+
+---
+Customer: Someone called me pretending to be from your fraud department and I may have given them my account number.
+Agent: Please don't worry, you did the right thing by calling us right away. I'm going to freeze your account immediately as a precaution and issue you new account numbers. We never ask for full account details over an unsolicited call.
+Customer: I'm really scared. How do I know my money is safe?
+Agent: Your funds are protected. We're freezing the account now and will monitor for any unauthorized activity. I'll also file an internal security report. A specialist will follow up with you within the hour.
+
+---
+Customer: I have a CD that's maturing next week. What are my options?
+Agent: Great timing to plan ahead. You can renew it at the current rate, roll it into a different term, transfer the funds to your savings account, or withdraw the full amount. There's a 10-day grace period after maturity to decide with no penalty.
+Customer: What's the current 12-month rate?
+Agent: The current 12-month CD rate is 4.75% APY. Would you like me to set up an automatic renewal or flag it for a manual review before it matures?
+
+---
+Customer: My credit score in your app dropped by 40 points overnight. What happened?
+Agent: That's understandably alarming. Score changes can happen for several reasons including a new hard inquiry, a change in your credit utilization, or a late payment being reported. Can I pull up your credit summary to check?
+Customer: Please do.
+Agent: I can see a new hard inquiry was reported yesterday, likely from a recent credit application. That typically causes a temporary dip. It should recover within a few months assuming no other changes.
+
+---
+Customer: I need to update the beneficiary on my savings account.
+Agent: Of course. I'll need to verify your identity before making that change. Can you confirm your date of birth and the last four digits of your SSN?
+Customer: Sure. DOB is March 12 1985, SSN last four is 7732.
+Agent: Verified. Please provide the name, date of birth, and relationship of the new beneficiary and I'll update that now.
+
+---
+Customer: My check deposit from three days ago still shows as pending. I need the funds.
+Agent: I understand. Large check deposits sometimes have extended holds for verification. Let me check the hold details on your deposit.
+Customer: It was $3,200 from my employer.
+Agent: I can see a 5-day hold was placed due to the check amount. Given your account history, I'm able to release $1,000 of those funds immediately. The remaining balance will clear in two more business days.
+
+---
+Customer: I want to set up automatic savings. Like move money to savings every payday.
+Agent: That's a great habit. You can set up a recurring transfer in the app under Transfers, then Schedule. You can set the frequency, amount, and date. Would you like me to walk you through it or set it up for you now?
+Customer: Can you set it up? $100 every two weeks on Friday.
+Agent: Done. Starting this Friday, $100 will automatically transfer from your checking to your savings every two weeks.
+
+---
+Customer: I'm traveling internationally next month and don't want my card to get blocked.
+Agent: Smart to plan ahead. I can add a travel notice to your account so transactions in your destination countries are approved. Which countries will you be visiting and what are the dates?
+Customer: France and Italy, November 10 through November 24.
+Agent: Travel notice added for France and Italy from November 10 to November 24. Your card should work without interruption. I'd also recommend keeping our international support number saved just in case.`;
+
+  document.getElementById('transcript-input').value = dummy;
+  document.getElementById('upload-status').textContent = '✓ Dummy transcripts loaded';
+  analyzeTranscripts();
 }
 
 function resetCopilot() {
