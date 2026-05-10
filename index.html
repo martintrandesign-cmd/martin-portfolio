@@ -514,7 +514,7 @@ async function sendChat() {
     const r = await fetch('/api/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 1000, system: SYS, messages: chatHistory })
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1000, system: SYS, messages: chatHistory })
     });
     const d = await r.json();
     let rep = d.content?.[0]?.text || 'Something went wrong, try again.';
@@ -703,7 +703,7 @@ async function analyzeTranscripts() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: 'claude-sonnet-4-6',
         max_tokens: 4000,
         messages: [{ role: 'user', content: CP_PROMPT + text }]
       })
@@ -884,7 +884,7 @@ async function generateSkill(intentId) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: 'claude-sonnet-4-6',
         max_tokens: 3000,
         messages: [{ role: 'user', content: SKILL_PROMPT + JSON.stringify(intent, null, 2) }]
       })
