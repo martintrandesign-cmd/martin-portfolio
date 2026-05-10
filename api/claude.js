@@ -13,8 +13,10 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    console.log('Anthropic status:', response.status, 'body:', JSON.stringify(data));
     res.status(response.status).json(data);
   } catch (err) {
+    console.log('Proxy error:', err.message);
     res.status(500).json({ error: err.message });
   }
 }
