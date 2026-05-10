@@ -291,9 +291,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
         <div class="projects-label">Projects</div>
         <div class="project-cards">
           <div class="project-card" onclick="showView('copilot')">
-            <div class="proj-tag">Tool · Coinbase</div>
+            <div class="proj-tag">Tool</div>
             <div class="proj-title">Conversation Skill Gen</div>
-            <div class="proj-desc">AI-powered skill generation and transcript analysis</div>
+            <div class="proj-desc">Turn support transcripts into working AI flows, no design background needed.</div>
             <div class="proj-badge">Try it live ↗</div>
           </div>
           <div class="project-card" onclick="showView('casestudy')">
@@ -340,13 +340,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <div class="copilot-scroll">
     <button class="back-btn" onclick="showView('chat')">← Back to portfolio</button>
     <div class="copilot-title">Conversation Skill Gen</div>
-    <div class="copilot-subtitle">AI-powered transcript analysis and skill generation</div>
+    <div class="copilot-subtitle">Upload a CSV or DOCX of customer support transcripts. The tool reads them, finds the most common intents, scores each one by automation potential, and generates a ready-to-use AI skill spec, complete with conversation flow, response templates, guardrails, and required data points.</div>
 
     <!-- Input state -->
     <div id="cp-input-state">
-      <textarea id="transcript-input" placeholder="Paste customer support transcripts here. Separate each transcript with a blank line or ---"></textarea>
+      <textarea id="transcript-input" style="display:none;"></textarea>
       <div style="display:flex;align-items:center;gap:10px;margin-top:12px;">
-        <button id="analyze-btn" onclick="analyzeTranscripts()">Analyze transcripts</button>
+        <button id="analyze-btn" onclick="analyzeTranscripts()" style="display:none;">Analyze transcripts</button>
         <label id="upload-label" style="font-size:12px;border:1px solid rgba(59,42,26,0.2);border-radius:3px;padding:9px 16px;cursor:pointer;opacity:0.6;font-family:var(--font);color:var(--text);">
           ↑ Upload CSV or DOCX
           <input type="file" id="file-upload" accept=".csv,.docx" style="display:none;" onchange="handleFileUpload(event)"/>
@@ -992,11 +992,13 @@ async function handleFileUpload(event) {
       const text = await file.text();
       document.getElementById('transcript-input').value = text;
       status.textContent = '✓ ' + file.name + ' loaded';
+      analyzeTranscripts();
     } else if (file.name.endsWith('.docx')) {
       const arrayBuffer = await file.arrayBuffer();
       const result = await mammoth.extractRawText({ arrayBuffer });
       document.getElementById('transcript-input').value = result.value;
       status.textContent = '✓ ' + file.name + ' loaded';
+      analyzeTranscripts();
     } else {
       status.textContent = 'Please upload a CSV or DOCX file.';
     }
