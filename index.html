@@ -37,7 +37,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 #view-chat.chat-active #feed::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 
 /* Pre-chat components */
-.from-martin{font-size:14px;line-height:1.75;color:var(--text);opacity:0.65;max-width:520px;padding-bottom:8px;}
+.from-martin{font-size:14px;line-height:1.75;color:var(--text);opacity:0.65;width:100%;padding-bottom:8px;}
 .component{width:100%;}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:16px 0 4px;}
 .stat .stat-l{display:block;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:5px;}
@@ -254,7 +254,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <nav>
     <a href="https://www.linkedin.com/in/martintrandesign/" target="_blank">LinkedIn</a>
     <a href="#" onclick="alert('Resume download coming soon!')">Resume</a>
-    <a href="#" onclick="showView('copilot');return false;" style="opacity:0.7;">CD Co-pilot</a>
+    <a href="#" onclick="showView('copilot');return false;" style="opacity:0.7;">Conversation Skill Gen</a>
   </nav>
 </header>
 
@@ -263,21 +263,23 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <div id="feed">
     <!-- Pre-chat components -->
     <div id="components">
-      <div class="from-martin">Hey, I'm Martin. I design conversations between people and AI, the flows, the NLU, the edge cases, and the UX that ties it all together. I've been a primary contributor to shaping how conversation design works at Coinbase. Here's a quick look at my work.</div>
+      <div class="from-martin">Hey, I'm Martin. I design conversations between people and AI, the flows, the NLU, the edge cases, and the UX that ties it all together. I've been a primary contributor to shaping how conversation design works at Coinbase. Here's a quick look at my&nbsp;work.</div>
 
-      <div class="component">
-        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:2px;">Coinbase impact</div>
-        <div class="stat-grid">
-          <div class="stat"><span class="stat-l">Automation rate</span><span class="stat-n"><span style="color:rgba(40,100,40,0.8);">&#8593;</span> +53%</span></div>
-          <div class="stat"><span class="stat-l">Cost savings</span><span class="stat-n">$70M+</span></div>
-          <div class="stat"><span class="stat-l">Bot CSAT</span><span class="stat-n">50%</span></div>
-          <div class="stat"><span class="stat-l">Experience</span><span class="stat-n">8 yrs</span></div>
+      <div class="component" style="margin-top:12px;">
+        <div style="border-left:2px solid rgba(59,42,26,0.35);padding-left:10px;">
+          <div style="font-size:13px;font-weight:600;opacity:0.6;margin-bottom:8px;">Coinbase impact</div>
+          <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+            <div class="stat"><span class="stat-l">Automation rate</span><span class="stat-n"><span style="color:rgba(40,100,40,0.8);">&#8593;</span> +53%</span></div>
+            <div class="stat"><span class="stat-l">Cost savings</span><span class="stat-n">$70M+</span></div>
+            <div class="stat"><span class="stat-l">Bot CSAT</span><span class="stat-n"><span style="color:rgba(40,100,40,0.8);">&#8593;</span> +30%</span></div>
+          </div>
         </div>
       </div>
 
       <div class="section-divider"></div>
 
       <div class="component">
+        <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:10px;">8 years in conversation design</div>
         <div class="timeline-row"><div class="tl-dot active"></div><div class="tl-co">Coinbase</div><div class="tl-role">Conversation Design Lead</div><div class="tl-yr">Jul 2021 – present</div></div>
         <div class="timeline-row"><div class="tl-dot"></div><div class="tl-co">LivePerson</div><div class="tl-role">UX & Conversational Designer</div><div class="tl-yr">2018 – 2021</div></div>
         <div class="timeline-row"><div class="tl-dot"></div><div class="tl-co">Conversable</div><div class="tl-role">UX & Conversational Designer</div><div class="tl-yr">2017 – 2018</div></div>
@@ -290,7 +292,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
         <div class="project-cards">
           <div class="project-card" onclick="showView('copilot')">
             <div class="proj-tag">Tool · Coinbase</div>
-            <div class="proj-title">CD Co-pilot</div>
+            <div class="proj-title">Conversation Skill Gen</div>
             <div class="proj-desc">AI-powered skill generation and transcript analysis</div>
             <div class="proj-badge">Try it live ↗</div>
           </div>
@@ -320,7 +322,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     <div id="starters">
       <button class="starter" onclick="go('What do you do at Coinbase?')">What do you do at Coinbase?</button>
       <button class="starter" onclick="go('Walk me through your design process.')">Walk me through your process</button>
-      <button class="starter" onclick="go('Tell me about the Conversation Design Co-pilot.')">Tell me about the CD Co-pilot</button>
+      <button class="starter" onclick="go('Tell me about the Conversation Skill Gen.')">Tell me about the Conversation Skill Gen</button>
       <button class="starter" onclick="go('What kind of role are you looking for?')">What are you looking for next?</button>
     </div>
     <div id="input-row">
@@ -337,7 +339,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <main id="view-copilot" class="view">
   <div class="copilot-scroll">
     <button class="back-btn" onclick="showView('chat')">← Back to portfolio</button>
-    <div class="copilot-title">Conversation Design Co-pilot</div>
+    <div class="copilot-title">Conversation Skill Gen</div>
     <div class="copilot-subtitle">AI-powered transcript analysis and skill generation</div>
 
     <!-- Input state -->
@@ -478,7 +480,7 @@ Background: You studied Arts and Technology at UT Dallas, a program built around
 
 You joined Coinbase in July 2021 and have been a primary contributor to shaping how conversation design works at the company. You helped set the standards, trained the team, maintained the NLU model, scoped API integrations and helped define the roadmap. The chatbot automation rate went from 0% to 67%, saving the company over $70 million in support costs. Bot CSAT has gone from 28% to 50%, which is above the financial services industry benchmark of 35 to 40%, while human agents sit at 65%. You defined the NLU improvement strategy, migrated the bot to Coinbase's in-house platform, and stepped in to help with Help Center UX and UI. You also designed and specced a pre-LLM Figma bot builder that engineers built out, which allowed the team to design and launch all bot flows, adjust fallbacks, escalation points and NLU.
 
-The thing you are most proud of at Coinbase is the Conversation Design Co-pilot, an AI-powered skill generation and transcript analysis tool you built in Cursor. Before it, creating an AI skill meant Conversation Design had to be involved at every step. That took days or weeks and created a real bottleneck. The tool changed everything. It analyzes transcripts, breaks intents into sub-intents, scores them by automation potential, generates the AI skill prompt and flags data points to watch. Now any product DRI or program owner can generate AI skills on their own without waiting on Conversation Design. What used to take days or weeks now takes minutes. Conversation Design still reviews every skill before it goes live.
+The thing you are most proud of at Coinbase is the Conversation Skill Gen, an AI-powered skill generation and transcript analysis tool you built in Cursor. Before it, creating an AI skill meant Conversation Design had to be involved at every step. That took days or weeks and created a real bottleneck. The tool changed everything. It analyzes transcripts, breaks intents into sub-intents, scores them by automation potential, generates the AI skill prompt and flags data points to watch. Now any product DRI or program owner can generate AI skills on their own without waiting on Conversation Design. What used to take days or weeks now takes minutes. Conversation Design still reviews every skill before it goes live.
 
 Your process starts with data: automation rate, CSAT and volume tell you where the highest impact work is. Then you go deep into transcripts to understand what is actually going wrong. You work with product teams on anything upstream and design the experience around what data needs to be surfaced.
 
