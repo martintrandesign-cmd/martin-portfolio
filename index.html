@@ -1247,7 +1247,8 @@ Customer: Oh. My store card. I thought I closed it years ago but they must have 
 Human Agent: That's exactly it. Unfortunately we can't reverse that but your score will recover over time as your account age averages out. I'd recommend not closing any other old accounts for now.
 Customer: That actually makes a lot of sense. Thank you for digging into it.`;
 
-  document.getElementById('transcript-input').value = dummy;
+  const withIntros = dummy.replace(/---\nCustomer:/g, '---\nNB123 Bot: Hi, thanks for reaching out to National Bank 123. I\'m your virtual assistant. How can I assist you today?\nCustomer:');
+  document.getElementById('transcript-input').value = withIntros;
   document.getElementById('upload-status').textContent = '✓ Dummy transcripts loaded';
   analyzeTranscripts();
 }
