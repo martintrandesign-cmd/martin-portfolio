@@ -1035,125 +1035,217 @@ async function handleFileUpload(event) {
 
 function loadDummyTranscripts() {
   const dummy = `---
-Customer: Hi, I've been trying to log into my account for the past hour and it keeps saying my password is wrong.
-Agent: I'm sorry to hear that. Let me look into your account. Can you confirm the email address on file?
-Customer: Sure, it's jsmith@email.com.
-Agent: Thank you. I can see your account has been temporarily locked after multiple failed attempts. I'll send a password reset link now.
-Customer: Great, thank you.
+Customer: hi i need help my card got declined at the grocery store and i have money in my account
+NB123 Bot: Hi there! Welcome to National Bank 123. I can help with card issues. Can you confirm the last 4 digits of your card?
+Customer: 8847
+NB123 Bot: Thank you! It looks like your card ending in 8847 is active and in good standing. The decline may have been a temporary network issue. Please try again.
+Customer: I already tried twice. Same result. I'm standing in line right now
+NB123 Bot: I understand that can be frustrating! Have you tried using contactless payment instead?
+Customer: I don't have that set up. Can you just tell me why it was declined
+NB123 Bot: I'm not able to see real-time decline reasons. I'd recommend calling the number on the back of your card.
+Customer: You ARE the number on the back of the card. I'm in a chat right now
+NB123 Bot: I apologize for the confusion! Let me connect you with a specialist who can look into this further.
+[Escalated to human agent]
+Human Agent: Hi, I'm Sarah. I can see your card was flagged by our fraud system due to an unusual purchase pattern. I've cleared the flag and your card should work now. I'm sorry for the trouble.
+Customer: Finally. Thank you Sarah.
 
 ---
-Customer: I need to dispute a charge on my account. There's a $149 charge from a merchant I don't recognize.
-Agent: I can help with that. Can you tell me the date of the charge and the merchant name shown?
-Customer: It says October 3rd, MerchX Online.
-Agent: Thank you. I've flagged this as a potential unauthorized transaction and opened a dispute. You'll receive a provisional credit within 3 business days while we investigate.
+Customer: I need to dispute a transaction. There's a charge for $312 from a place called Vendor Solutions LLC and I have no idea what it is
+NB123 Bot: I can help with transaction disputes. Can you confirm the date of the charge?
+Customer: October 14th
+NB123 Bot: Thank you. To dispute this charge, please visit our website at nationalbank123.com/disputes and complete the online form.
+Customer: Why can't you just do it here
+NB123 Bot: Our dispute process requires a formal form submission for documentation purposes.
+Customer: That's ridiculous I'm literally talking to you. Can I speak to a human
+NB123 Bot: Of course! Connecting you now.
+[Escalated to human agent]
+Human Agent: Hi, I'm Marcus. I can absolutely open this dispute for you right here. I've flagged the $312 charge from Vendor Solutions LLC as unauthorized and opened case number DSP-44821. You'll see a provisional credit within 3 business days. Sorry the bot sent you in circles.
+Customer: Thank you. That's all I needed.
 
 ---
-Customer: My wire transfer was supposed to arrive two days ago and it still hasn't shown up.
-Agent: I understand how frustrating that must be. Can I get the reference number for the transfer?
-Customer: It's WT-884729.
-Agent: I can see the wire was sent successfully on our end. The delay may be with the receiving bank. I'd recommend contacting them with the reference number. If it doesn't arrive by tomorrow, call us back and we'll escalate.
+Customer: my paycheck was supposed to hit this morning and it's not there. i have bills due today
+NB123 Bot: I'm sorry to hear that! Direct deposits typically post by 9am. What time is it currently for you?
+Customer: It's 2pm. It's not here.
+NB123 Bot: Sometimes direct deposits can be delayed by up to 24 hours depending on your employer's payroll processor.
+Customer: This has never happened before in 3 years. I need to pay rent today
+NB123 Bot: I understand your concern. Have you confirmed your routing number with your employer?
+Customer: Yes I have the same account for 3 years. Something is wrong on your end
+NB123 Bot: I'm not able to trace incoming deposits directly. You may want to contact your employer's payroll department.
+Customer: Are you serious right now. I need a human
+[Escalated to human agent]
+Human Agent: I'm so sorry about this. I can see your employer submitted the deposit but it's stuck in a processing queue due to a system issue on our end this morning. We're releasing it manually now. It will post within the next 30 minutes. I can also waive any late fees if your rent payment bounces due to this.
+Customer: okay thank you. i really needed to hear that
 
 ---
-Customer: I got a text saying there was suspicious activity on my card. I didn't make those charges.
-Agent: Thank you for reaching out quickly. I'm going to freeze your card right now to prevent further charges. Can you confirm the last four digits of your card?
-Customer: 4471.
-Agent: Got it, card ending in 4471 is now frozen. I'll send you a replacement card and open a fraud claim for the unauthorized charges.
+Customer: Good morning. I'd like to set up a travel notice for an upcoming trip please.
+NB123 Bot: Good morning! Happy to help. Which countries will you be visiting?
+Customer: Japan and South Korea. I'll be there from November 18 to December 2.
+NB123 Bot: Got it. Travel notice added for Japan and South Korea from November 18 to December 2. Your cards should work without interruption during that period. Is there anything else I can help with?
+Customer: That was easy. No, that's all. Thank you.
+NB123 Bot: Have a wonderful trip! Don't hesitate to reach out if you need anything.
 
 ---
-Customer: I want to increase my credit card limit. I've had the card for two years and always pay on time.
-Agent: That's great to hear. I can submit a limit increase request for you. This will trigger a soft credit check that won't affect your credit score. Would you like to proceed?
+Customer: Someone just called me saying they were from National Bank 123 fraud department and they asked me to read them a code that was texted to me. I did it. I think I was scammed.
+NB123 Bot: I'm sorry to hear that. Can you tell me more about the call?
+Customer: They said there was fraud on my account and they needed to verify my identity with a one time code. I gave it to them. I think they might be in my account right now
+NB123 Bot: For security concerns, I recommend visiting our security help page at nationalbank123.com/security.
+Customer: WHAT? They could be draining my account right now and you're sending me to a website?
+NB123 Bot: I understand this is urgent. Let me connect you with our security team.
+[Escalated to human agent]
+Human Agent: This is the fraud team. We're freezing your account immediately. I can see an attempted login from an unrecognized device 8 minutes ago. We blocked it but I want to lock everything down right now. Do not worry, your funds are safe. We're issuing you new account credentials and will call you back within 10 minutes from our verified line. Please hang up any calls from numbers you don't recognize until then.
+Customer: Oh thank god. Thank you so much.
+
+---
+Customer: Hi I just wanted to say your new app update is really clean. The new savings dashboard is exactly what I needed. Super easy to see where my money is going.
+NB123 Bot: Thank you so much for the kind words! We love hearing that. Is there anything I can help you with today?
+Customer: Actually yes. Can you help me set up a round-up savings rule? Every time I spend, round up to the nearest dollar and move the difference to savings.
+NB123 Bot: Absolutely! Round-up savings is available under Settings, then Savings Rules, then Round-Up. You can select which account to round up from and which savings account to deposit into.
+Customer: Found it. Got it set up. That was easy, thanks.
+NB123 Bot: Great! Those small amounts add up fast. Have a great day!
+
+---
+Customer: I applied for a mortgage refinance 6 weeks ago and I haven't heard anything. I've called three times and nobody can tell me where my application is.
+NB123 Bot: I'm sorry for the delay. Can I get your application reference number?
+Customer: I don't have it. Nobody ever gave me one.
+NB123 Bot: I'm not able to look up applications without a reference number. Do you have the email confirmation you received when you applied?
+Customer: I never got one. That's part of the problem.
+NB123 Bot: I'd recommend visiting your nearest branch to look into this in person.
+Customer: I live 45 minutes from the nearest branch. This is unacceptable. I've been waiting 6 weeks.
+NB123 Bot: I understand your frustration. Let me connect you with our mortgage team.
+[Escalated to human agent]
+Human Agent: I sincerely apologize for this experience. I'm pulling up your file now by name and SSN. I can see your application was submitted but got stuck in our document verification queue and no follow-up was triggered. I'm escalating this to a senior mortgage advisor right now who will call you today. This should have been resolved weeks ago and I'm sorry.
+Customer: I just want it sorted. Thank you for actually looking into it.
+
+---
+Customer: Can I check my account balance?
+NB123 Bot: Of course! Your current checking account balance is $2,847.33. Your savings account balance is $11,204.50. Is there anything else I can help with?
+Customer: No that's all I needed, thanks.
+NB123 Bot: You're welcome! Have a great day.
+
+---
+Customer: I got hit with three overdraft fees this week. $35 each. My account went negative because of a timing issue with a check I deposited.
+NB123 Bot: I understand that's frustrating. Overdraft fees are applied when transactions exceed your available balance.
+Customer: I know what an overdraft fee is. I'm asking you to reverse them because the check deposit should have cleared before those transactions posted.
+NB123 Bot: Fee reversals require review by our customer care team. I can connect you with them.
+Customer: Finally something useful. Yes please.
+[Escalated to human agent]
+Human Agent: Looking at your account, I can see the check was deposited Monday morning but a partial hold was placed, which caused the timing issue. That's on us. I've reversed all three fees, that's $105 back to your account. I've also added a note to your account so our system flags this situation in the future before applying fees.
+Customer: I really appreciate that. Thank you.
+
+---
+Customer: hi i keep getting logged out of the app every time i close it. i have to reset my password every single day. it's been like this for two weeks
+NB123 Bot: I'm sorry to hear that! This may be related to your device settings. Have you tried clearing your app cache?
+Customer: Yes. Multiple times.
+NB123 Bot: Have you tried uninstalling and reinstalling the app?
+Customer: Yes. Three times.
+NB123 Bot: Have you tried logging in from a different device?
+Customer: I don't have another device. This is my phone.
+NB123 Bot: I recommend contacting our technical support team at 1-800-NB1-2345.
+Customer: I am using your support chat right now. Can you not help me?
+NB123 Bot: I apologize. Let me escalate this to a specialist.
+[Escalated to human agent]
+Human Agent: Hi, I can see this is a known issue affecting a small number of accounts after our last app update two weeks ago. Your account has been flagged and our tech team will push a fix to your account within 24 hours. In the meantime I can set a 30-day session token so you don't have to keep logging in. Really sorry this has been going on for two weeks without a resolution.
+Customer: Thank you. That would have been nice to know sooner.
+
+---
+Customer: I need to send a wire transfer to pay for a property purchase. It's $87,000.
+NB123 Bot: I can help with wire transfers. For amounts over $25,000, wire transfers must be initiated by calling our wire desk directly at 1-800-NB1-WIRE or visiting a branch.
+Customer: Okay that's fine. Can you at least confirm the receiving bank details I have are correct before I call?
+NB123 Bot: I'm not able to validate external bank routing numbers. I'd recommend confirming with the receiving bank directly.
+Customer: Fair enough. What are your wire cutoff times?
+NB123 Bot: Domestic wire transfers must be submitted by 4pm Eastern Time on business days to process same day.
+Customer: Perfect, thank you. That's all I needed.
+
+---
+Customer: I lost my wallet and I need to cancel both my debit card and my credit card
+NB123 Bot: I'm sorry to hear that. I can help cancel your debit card. For your credit card, please call the number on your statement.
+Customer: I don't have my statement. I lost my wallet. Everything was in it.
+NB123 Bot: You can find your credit card number by logging into the app.
+Customer: If I could log in easily I wouldn't be talking to you. I'm locked out too.
+NB123 Bot: I understand. Let me connect you with an agent who can help with all of this.
+[Escalated to human agent]
+Human Agent: Hi, I can hear this has been really stressful. I've pulled up your full profile. I'm canceling both cards right now and ordering replacements to your address on file. I'm also resetting your app login and sending a secure link to your email to get back in. Everything should be sorted within the next few minutes. Replacement cards will arrive in 3 to 5 business days.
+Customer: You have no idea how relieved I am. Thank you.
+
+---
+Customer: Quick question. What's the interest rate on my savings account?
+NB123 Bot: Your current High Yield Savings account has an APY of 4.20%. This rate is variable and reviewed monthly.
+Customer: Great, thanks. And when does interest post?
+NB123 Bot: Interest is calculated daily and posted to your account on the last business day of each month.
+Customer: Perfect. That's all I needed.
+
+---
+Customer: I think someone made a fraudulent account in my name. I got a welcome email from National Bank 123 and I never applied for anything.
+NB123 Bot: That does sound concerning. Can you provide the email address the welcome email was sent to?
+Customer: It came to my real email. My name is on it but I never applied.
+NB123 Bot: I recommend freezing your credit at the three major bureaus as a precaution.
+Customer: That doesn't tell me if someone opened an account in my name at YOUR bank.
+NB123 Bot: I'm not able to verify account details without authentication. Please visit a branch with a government ID.
+Customer: I'm not going to a branch, this needs to be handled now. Someone is committing fraud.
+[Escalated to human agent]
+Human Agent: I completely understand and I take this seriously. I'm flagging this as a potential identity fraud case right now. I can look up the account that was opened and I'm seeing it was created online 2 days ago. I'm freezing it immediately and flagging it for our fraud investigation team. They will contact you within 24 hours. I'm also sending you a fraud case number by email. Please also file a report at identitytheft.gov.
+Customer: Thank you. I'm glad someone is taking this seriously.
+
+---
+Customer: I want to close my savings account and transfer the balance to my checking.
+NB123 Bot: I can help with that. To close a savings account, you'll need to visit a branch or submit a written request by mail.
+Customer: That seems outdated. Can't I do it online or here?
+NB123 Bot: For account closures, our policy requires in-person or written verification.
+Customer: I understand. Can you at least confirm my branch address and hours?
+NB123 Bot: Your nearest branch is at 4421 Main Street. Hours are Monday through Friday 9am to 5pm, Saturday 9am to 1pm.
+Customer: Okay. I'll go Saturday. Thanks.
+
+---
+Customer: my daughter just turned 18 and i want to add her to my account. she's been on my account as a minor and i want to upgrade her to a full joint account holder
+NB123 Bot: Congratulations to your daughter! To add a joint account holder, both account holders must be present at a branch with government-issued ID.
+Customer: We can do that. Do I need to make an appointment?
+NB123 Bot: Walk-ins are welcome but appointments are recommended for account changes. You can book at nationalbank123.com/appointments.
+Customer: Perfect. One more thing, will her credit be impacted?
+NB123 Bot: Adding a joint account holder does not affect either party's credit score. It is not a credit product.
+Customer: Great. That's all I needed. Thank you.
+
+---
+Customer: I've been a customer for 22 years and I'm seriously considering leaving. Your app has crashed on me four times this week, I can't see my transaction history past 30 days, and nobody seems to care.
+NB123 Bot: I'm sorry to hear you've had a frustrating experience. Can you tell me which device and operating system you're using?
+Customer: iPhone 14, iOS 17. But that's not the point. I've reported this before and nothing has happened.
+NB123 Bot: I understand. App performance issues are best reported through our feedback tool in the app settings.
+Customer: I've done that. Three times. Nothing.
+NB123 Bot: I'm sorry for the inconvenience. I can escalate this to our technical team.
+Customer: Please just get me a human who actually has authority to do something.
+[Escalated to human agent]
+Human Agent: Thank you for your patience and for your 22 years with us. I genuinely mean that. I can see your previous feedback submissions and I'm embarrassed they weren't followed up on. I'm escalating this to our product team directly and flagging your account for a personal follow-up call from our customer retention team within 48 hours. I can also offer you 3 months of our premium account tier at no charge while we resolve this. I don't want to lose you as a customer.
+Customer: That's the first time someone has actually acknowledged the issue. Thank you.
+
+---
+Customer: Can I get a copy of my last 12 months of statements for my tax accountant?
+NB123 Bot: Of course! You can download up to 7 years of statements from the app under Accounts, then Documents, then Statements. You can select the date range and download as PDF.
+Customer: Found it. This is exactly what I needed. You made that easy.
+NB123 Bot: Happy to help! Let me know if there's anything else.
+
+---
+Customer: My card was charged twice for the same transaction. $67.50 at a coffee shop. Happened yesterday.
+NB123 Bot: I can see two pending charges of $67.50 from the same merchant. One of these may be a pre-authorization that will drop off within 3 to 5 business days.
+Customer: Both are showing as posted, not pending.
+NB123 Bot: I see. In that case this would be classified as a duplicate transaction dispute. I can open a dispute for the second charge right now. Would you like me to proceed?
 Customer: Yes please.
-Agent: Done. You should receive a decision within 24 hours by email.
+NB123 Bot: Done. Dispute case DCH-77342 has been opened for the duplicate $67.50 charge. A provisional credit will be applied within 2 business days while we investigate.
+Customer: That was surprisingly smooth. Thank you.
 
 ---
-Customer: I set up direct deposit with my employer but my paycheck hasn't hit my account yet. It's payday.
-Agent: I'm sorry about that. Direct deposits typically post by 9am on the payment date. Can you confirm your routing and account number are correct with your employer?
-Customer: I think so. I used the numbers from my app.
-Agent: Great. If it hasn't posted by end of business today, call us back and we'll trace the deposit. It may also be a first-time processing delay with your employer's payroll system.
-
----
-Customer: I was charged a $35 overdraft fee but I had money in my savings account. Why didn't you use that?
-Agent: I'm sorry about that. Overdraft protection needs to be linked between your accounts. It looks like it wasn't set up on your account. I can link them now and also request a one-time fee reversal given the circumstances.
-Customer: Yes please do both.
-Agent: Done. Your accounts are now linked and the $35 fee has been reversed.
-
----
-Customer: I lost my debit card. I need to cancel it and get a new one.
-Agent: Of course. I'll cancel the card right now to protect your account. Would you like to keep your same PIN or set a new one when the replacement arrives?
-Customer: Same PIN is fine.
-Agent: Your old card is now deactivated. A replacement will arrive within 5 to 7 business days. You can still use Apple Pay or Google Pay in the meantime.
-
----
-Customer: I'm trying to send money to my friend using your app but it keeps saying the transfer failed.
-Agent: I'm sorry to hear that. Can you tell me the amount you're trying to send and the error message you're seeing?
-Customer: $200, and it says payment method declined.
-Agent: That usually means your transfer limit has been reached for the day. Your daily peer-to-peer limit is $500 and it looks like you've already sent $350 today. You can try again tomorrow or request a limit increase.
-
----
-Customer: I need a letter confirming my account balance for a visa application.
-Agent: Absolutely. I can generate an official balance confirmation letter. Would you like it to reflect today's balance or a specific date?
-Customer: Today's balance please.
-Agent: I'll email it to the address on file within one business hour. Let me know if you need it adjusted.
-
----
-Customer: I noticed my mortgage payment went up this month. Nobody told me it was changing.
-Agent: I understand your concern. Mortgage payments can change when your escrow account is recalculated annually for property tax or insurance adjustments. I can send you a detailed escrow analysis statement.
-Customer: Please do. This is a significant increase and I want to understand why.
-Agent: I've sent it to your email. If you'd like to speak with a mortgage specialist to go over it in detail, I can schedule a call.
-
----
-Customer: I applied for a personal loan two weeks ago and haven't heard anything.
-Agent: I apologize for the wait. Let me pull up your application. It looks like we need one more document from you, a recent pay stub from the last 30 days. That may be why it's been on hold.
-Customer: Nobody told me that. Can I just upload it in the app?
-Agent: Yes, you can upload it directly in the documents section of your loan application in the app. Once received, we should have a decision within 2 business days.
-
----
-Customer: I want to close my checking account. I opened a new one at another bank.
-Agent: I can help with that. Before we close it, I want to make sure there are no pending transactions or automatic payments linked to this account. Do you know if there are any recurring payments set up?
-Customer: I think I moved them all over.
-Agent: Great. I'd recommend waiting one full billing cycle to be safe. Once you're ready, you can close it in the app or I can process it now if you prefer.
-
----
-Customer: Someone called me pretending to be from your fraud department and I may have given them my account number.
-Agent: Please don't worry, you did the right thing by calling us right away. I'm going to freeze your account immediately as a precaution and issue you new account numbers. We never ask for full account details over an unsolicited call.
-Customer: I'm really scared. How do I know my money is safe?
-Agent: Your funds are protected. We're freezing the account now and will monitor for any unauthorized activity. I'll also file an internal security report. A specialist will follow up with you within the hour.
-
----
-Customer: I have a CD that's maturing next week. What are my options?
-Agent: Great timing to plan ahead. You can renew it at the current rate, roll it into a different term, transfer the funds to your savings account, or withdraw the full amount. There's a 10-day grace period after maturity to decide with no penalty.
-Customer: What's the current 12-month rate?
-Agent: The current 12-month CD rate is 4.75% APY. Would you like me to set up an automatic renewal or flag it for a manual review before it matures?
-
----
-Customer: My credit score in your app dropped by 40 points overnight. What happened?
-Agent: That's understandably alarming. Score changes can happen for several reasons including a new hard inquiry, a change in your credit utilization, or a late payment being reported. Can I pull up your credit summary to check?
-Customer: Please do.
-Agent: I can see a new hard inquiry was reported yesterday, likely from a recent credit application. That typically causes a temporary dip. It should recover within a few months assuming no other changes.
-
----
-Customer: I need to update the beneficiary on my savings account.
-Agent: Of course. I'll need to verify your identity before making that change. Can you confirm your date of birth and the last four digits of your SSN?
-Customer: Sure. DOB is March 12 1985, SSN last four is 7732.
-Agent: Verified. Please provide the name, date of birth, and relationship of the new beneficiary and I'll update that now.
-
----
-Customer: My check deposit from three days ago still shows as pending. I need the funds.
-Agent: I understand. Large check deposits sometimes have extended holds for verification. Let me check the hold details on your deposit.
-Customer: It was $3,200 from my employer.
-Agent: I can see a 5-day hold was placed due to the check amount. Given your account history, I'm able to release $1,000 of those funds immediately. The remaining balance will clear in two more business days.
-
----
-Customer: I want to set up automatic savings. Like move money to savings every payday.
-Agent: That's a great habit. You can set up a recurring transfer in the app under Transfers, then Schedule. You can set the frequency, amount, and date. Would you like me to walk you through it or set it up for you now?
-Customer: Can you set it up? $100 every two weeks on Friday.
-Agent: Done. Starting this Friday, $100 will automatically transfer from your checking to your savings every two weeks.
-
----
-Customer: I'm traveling internationally next month and don't want my card to get blocked.
-Agent: Smart to plan ahead. I can add a travel notice to your account so transactions in your destination countries are approved. Which countries will you be visiting and what are the dates?
-Customer: France and Italy, November 10 through November 24.
-Agent: Travel notice added for France and Italy from November 10 to November 24. Your card should work without interruption. I'd also recommend keeping our international support number saved just in case.`;
+Customer: I need help understanding why my credit score dropped 80 points. I haven't done anything different.
+NB123 Bot: I'm sorry to hear that. Credit score changes can be caused by several factors. Have you recently applied for new credit?
+Customer: No.
+NB123 Bot: Have there been any changes to your credit utilization?
+Customer: I don't think so. My balances are the same.
+NB123 Bot: It may be a reporting error. I recommend checking your full credit report at annualcreditreport.com.
+Customer: I already did. Nothing looks wrong there. Can you see anything from your end?
+NB123 Bot: Our credit score tool pulls from TransUnion. I can see your score history but not the detailed reason codes. Would you like me to connect you with a credit specialist?
+Customer: Yes please.
+[Escalated to human agent]
+Human Agent: Looking at your score history and the reason codes we received, it looks like your oldest credit card account was closed last month, which reduced your average account age significantly. Do you recall closing or being asked to close an older card?
+Customer: Oh. My store card. I thought I closed it years ago but they must have just processed it now.
+Human Agent: That's exactly it. Unfortunately we can't reverse that but your score will recover over time as your account age averages out. I'd recommend not closing any other old accounts for now.
+Customer: That actually makes a lot of sense. Thank you for digging into it.`;
 
   document.getElementById('transcript-input').value = dummy;
   document.getElementById('upload-status').textContent = '✓ Dummy transcripts loaded';
