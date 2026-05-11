@@ -416,9 +416,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
             <th>#</th>
             <th>Sub-intent</th>
             <th>Volume</th>
-            <th>Current</th>
-            <th>Potential</th>
-            <th>Gap</th>
+            <th>Automated Today</th>
+            <th>AI Ceiling</th>
+            <th>Opportunity</th>
             <th>Frustration</th>
             <th>Action</th>
           </tr>
@@ -937,12 +937,13 @@ async function generateSkill(intentId) {
       })
     });
     const d = await r.json();
+    if (d.error) throw new Error(JSON.stringify(d.error));
     let raw = d.content?.[0]?.text || '{}';
     raw = raw.replace(/```json/g,'').replace(/```/g,'').trim();
     const skill = JSON.parse(raw);
     renderSkill(skill, panel);
   } catch(e) {
-    panel.innerHTML = '<div class="detail-text" style="color:rgba(139,37,0,0.7);">Error generating skill. Please try again.</div>';
+    panel.innerHTML = `<div class="detail-text" style="color:rgba(139,37,0,0.7);">Error generating skill: ${e.message}</div>`;
   }
 }
 
