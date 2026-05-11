@@ -342,6 +342,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     <div class="copilot-title">Conversation Skill Gen</div>
     <div class="copilot-subtitle">Turn raw support transcripts into a complete AI skill spec, ready for engineering to build on.</div>
 
+    <div id="cp-intro">
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0;">
       <div style="background:rgba(59,42,26,0.03);border-radius:6px;padding:14px;">
         <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:6px;">01 Upload</div>
@@ -363,6 +364,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     </div>
 
     <div style="font-size:12px;opacity:0.4;margin-bottom:20px;">Need help taking it further? Martin is available for consulting to help your team integrate, build, and ship. <a href="mailto:martintrandesign@gmail.com?subject=Conversation Skill Gen consulting&body=Hi Martin, I tried the Conversation Skill Gen and would love to talk about working together." style="color:var(--text);text-decoration:underline;font-family:var(--font);">Get in touch!</a></div>
+    </div>
 
     <!-- Input state -->
     <div id="cp-input-state">
@@ -1613,6 +1615,7 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
     ]
   };
 
+  document.getElementById('cp-intro').style.display = 'none';
   document.getElementById('cp-input-state').style.display = 'none';
   document.getElementById('loading-main-text').style.display = 'none';
   document.getElementById('loading-sub-text').style.display = 'none';
@@ -1626,6 +1629,12 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
     resultsEl.style.opacity = '0';
     renderAnalysis(analysisData);
     document.getElementById('results-meta').innerHTML += '<span id="dummy-badge" style="margin-left:10px;font-size:11px;padding:2px 8px;border:1px solid rgba(59,42,26,0.2);border-radius:3px;opacity:0.5;letter-spacing:0.03em;">Demo data</span>';
+    // Inject context summary
+    const summaryGrid = document.getElementById('summary-grid');
+    const contextBanner = document.createElement('div');
+    contextBanner.style.cssText = 'border-left:2px solid rgba(59,42,26,0.15);padding:10px 14px;margin:16px 0 4px;';
+    contextBanner.innerHTML = '<div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:5px;">About this demo</div><div style="font-size:12px;line-height:1.65;opacity:0.55;">These are fictional support transcripts for National Bank 123, a mock retail bank. They cover card declines, transaction disputes, account lockouts, balance inquiries, loan payoffs, and credit score questions. Conversations range from smooth resolutions to frustrated escalations to human agents. The analysis below reflects what the tool would surface from a real batch of transcripts.</div>';
+    summaryGrid.parentNode.insertBefore(contextBanner, summaryGrid);
     resultsEl.style.transition = 'opacity 0.5s ease';
     requestAnimationFrame(() => requestAnimationFrame(() => { resultsEl.style.opacity = '1'; }));
   }, 2800);
@@ -1637,6 +1646,7 @@ function resetCopilot() {
   document.getElementById('skill-panel').style.display = 'none';
   document.getElementById('skill-panel').innerHTML = '';
   document.getElementById('transcript-input').value = '';
+  document.getElementById('cp-intro').style.display = '';
   document.getElementById('cp-input-state').style.display = 'block';
 }
 
