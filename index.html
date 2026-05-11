@@ -1253,10 +1253,308 @@ Customer: Oh. My store card. I thought I closed it years ago but they must have 
 Human Agent: That's exactly it. Unfortunately we can't reverse that but your score will recover over time as your account age averages out. I'd recommend not closing any other old accounts for now.
 Customer: That actually makes a lot of sense. Thank you for digging into it.`;
 
-  const withIntros = dummy.replace(/---\nCustomer:/g, '---\nNB123 Bot: Hi, thanks for reaching out to National Bank 123. I\'m your virtual assistant. How can I assist you today?\nCustomer:');
-  document.getElementById('transcript-input').value = withIntros;
-  document.getElementById('upload-status').textContent = '✓ Dummy transcripts loaded';
-  analyzeTranscripts();
+  document.getElementById('transcript-input').value = dummy;
+  document.getElementById('upload-status').textContent = '✓ 20 dummy transcripts loaded';
+
+  // Pre-baked analysis — skips API call so the demo always works instantly
+  analysisData = {
+    "total_transcripts": 20,
+    "time_saved_estimate": "~3 days",
+    "intents": [
+      {
+        "id": 1,
+        "name": "Card Decline Troubleshooting",
+        "volume_pct": 28,
+        "frustration_score": 8.4,
+        "current_automation_rate": 12,
+        "automation_potential": 82,
+        "gap": 70,
+        "recommendation": "Build AI skill",
+        "problem_summary": "Customers experience card declines in high-stakes moments, often while standing at a point-of-sale terminal. The bot cannot surface the actual decline reason code, leaving customers without actionable information and escalating frustration quickly.",
+        "root_causes": "The bot lacks access to real-time fraud flag status and decline reason codes from the card network. Without that data, it falls back to generic advice that doesn't apply to the customer's situation.",
+        "why_automatable": "Decline reasons are structured data available via card network APIs. An AI skill with access to fraud flag status and decline codes could resolve the majority of these contacts without a human agent.",
+        "agent_resolution": "Human agents look up the fraud flag in the card management system, clear it if safe, and confirm the card is active. Average handle time: ~4 minutes.",
+        "transcript_excerpts": [
+          "You ARE the number on the back of the card. I'm in a chat right now",
+          "I already tried twice. Same result. I'm standing in line right now",
+          "I can see your card was flagged by our fraud system due to an unusual purchase pattern. I've cleared the flag and your card should work now."
+        ],
+        "positive_detection_phrases": ["card was declined", "card not working", "payment declined", "card got rejected", "can't use my card"],
+        "negative_detection_phrases": ["card was stolen", "cancel my card", "card expired", "dispute a charge"],
+        "guardrails": [
+          "Never confirm a fraud flag has been cleared without verifying agent authorization",
+          "Do not promise card will work after troubleshooting — confirm status only",
+          "Escalate immediately if customer reports card used in a different city they haven't visited"
+        ],
+        "data_points": [
+          {
+            "id": "dp_1",
+            "name": "Fraud flag status",
+            "api_source": "Card Management API",
+            "impact_level": "Critical",
+            "automation_impact_pct": 35,
+            "without_impact": "Bot cannot determine if a fraud hold is the cause, forces escalation in 100% of cases"
+          },
+          {
+            "id": "dp_2",
+            "name": "Decline reason code",
+            "api_source": "Card Network API",
+            "impact_level": "Critical",
+            "automation_impact_pct": 28,
+            "without_impact": "Bot can only give generic advice — no ability to tell customer why the decline happened"
+          },
+          {
+            "id": "dp_3",
+            "name": "Card status and spending limits",
+            "api_source": "Account API",
+            "impact_level": "High",
+            "automation_impact_pct": 12,
+            "without_impact": "Bot cannot confirm whether the card is active or if a spending limit caused the decline"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Transaction Dispute Initiation",
+        "volume_pct": 22,
+        "frustration_score": 7.9,
+        "current_automation_rate": 5,
+        "automation_potential": 74,
+        "gap": 69,
+        "recommendation": "Build AI skill",
+        "problem_summary": "Customers want to dispute unrecognized or incorrect charges but the bot redirects them to a web form instead of handling it in-channel. This creates unnecessary friction and is the leading reason customers request human escalation.",
+        "root_causes": "The bot lacks integration with the dispute management system. Without write access to open a case, it cannot complete the most basic customer need.",
+        "why_automatable": "Dispute initiation is a well-defined transactional flow. With write access to the dispute system, an AI skill can collect the required fields, open the case, and issue a case number — the same outcome agents provide.",
+        "agent_resolution": "Agents collect the charge date, merchant name, and amount, then open a dispute case in the back-end system. Provisional credit is issued within 3 business days. Average handle time: ~6 minutes.",
+        "transcript_excerpts": [
+          "Why can't you just do it here",
+          "That's ridiculous I'm literally talking to you. Can I speak to a human",
+          "I can absolutely open this dispute for you right here. I've flagged the $312 charge as unauthorized and opened case number DSP-44821."
+        ],
+        "positive_detection_phrases": ["dispute a charge", "unauthorized transaction", "charge I don't recognize", "didn't make this purchase", "fraudulent charge on my account"],
+        "negative_detection_phrases": ["cancel a subscription", "request a refund from a merchant", "return a purchase", "billing error on my loan"],
+        "guardrails": [
+          "Confirm transaction details with the customer before opening a dispute — never dispute without explicit confirmation",
+          "Do not promise a specific credit timeline — use 'typically within 3 business days'",
+          "Escalate if the customer reports more than 3 unrecognized transactions — potential account compromise"
+        ],
+        "data_points": [
+          {
+            "id": "dp_1",
+            "name": "Transaction lookup by date and amount",
+            "api_source": "Transaction History API",
+            "impact_level": "Critical",
+            "automation_impact_pct": 30,
+            "without_impact": "Bot cannot confirm the charge exists or pull merchant details, making dispute initiation impossible"
+          },
+          {
+            "id": "dp_2",
+            "name": "Dispute case creation (write access)",
+            "api_source": "Dispute Management API",
+            "impact_level": "Critical",
+            "automation_impact_pct": 30,
+            "without_impact": "Without write access the bot can only redirect to a form — the core failure mode in current transcripts"
+          },
+          {
+            "id": "dp_3",
+            "name": "Provisional credit eligibility",
+            "api_source": "Account API",
+            "impact_level": "Medium",
+            "automation_impact_pct": 10,
+            "without_impact": "Bot cannot confirm if credit will be issued, may set incorrect expectations"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Password and Account Access Recovery",
+        "volume_pct": 18,
+        "frustration_score": 6.2,
+        "current_automation_rate": 45,
+        "automation_potential": 88,
+        "gap": 43,
+        "recommendation": "Build AI skill",
+        "problem_summary": "Customers locked out of online banking or mobile app need to reset credentials or unlock their account. The bot handles some of this flow but frequently fails on edge cases like MFA device changes or security question failures.",
+        "root_causes": "The identity verification step has no fallback when the customer's registered MFA device is unavailable. The bot terminates the session instead of offering an alternative verification path.",
+        "why_automatable": "Credential reset is a high-volume, well-defined flow with existing self-service infrastructure. Closing the MFA fallback gap would push automation well above 80%.",
+        "agent_resolution": "Agents perform enhanced identity verification using security questions plus a knowledge-based question, then trigger a reset link to the customer's registered email. Average handle time: ~5 minutes.",
+        "transcript_excerpts": [
+          "I don't have access to that phone number anymore. I got a new one last year",
+          "I've been locked out for two days and every time I call it just sends me to the bot",
+          "I've manually verified your identity and sent a reset link to your email on file."
+        ],
+        "positive_detection_phrases": ["can't log in", "forgot my password", "account is locked", "locked out", "reset my password"],
+        "negative_detection_phrases": ["change my email address", "update my phone number", "close my account", "suspicious login I didn't make"],
+        "guardrails": [
+          "Never bypass two-factor authentication without completing an approved alternative verification path",
+          "Lock the account after 3 failed verification attempts and escalate to a human agent",
+          "Do not send reset links to an email address the customer provides mid-session — only use the one on file"
+        ],
+        "data_points": [
+          {
+            "id": "dp_1",
+            "name": "Account lockout status",
+            "api_source": "Identity and Access API",
+            "impact_level": "Critical",
+            "automation_impact_pct": 20,
+            "without_impact": "Bot cannot confirm whether the account is locked or the password is simply incorrect"
+          },
+          {
+            "id": "dp_2",
+            "name": "MFA device registry",
+            "api_source": "Identity and Access API",
+            "impact_level": "High",
+            "automation_impact_pct": 18,
+            "without_impact": "Bot cannot detect that the customer's MFA device is no longer active, causing all alternative-verification cases to fail"
+          },
+          {
+            "id": "dp_3",
+            "name": "Password reset trigger (write access)",
+            "api_source": "Identity and Access API",
+            "impact_level": "High",
+            "automation_impact_pct": 15,
+            "without_impact": "Without write access the bot cannot send a reset link and must escalate all locked-account cases"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Balance and Transaction Inquiry",
+        "volume_pct": 16,
+        "frustration_score": 3.1,
+        "current_automation_rate": 70,
+        "automation_potential": 95,
+        "gap": 25,
+        "recommendation": "Build AI skill",
+        "problem_summary": "Customers asking for account balances or recent transaction history. Most of these are resolved quickly but a subset escalates when customers believe the displayed balance is incorrect or a pending transaction is showing unexpectedly.",
+        "root_causes": "Pending transaction logic is not clearly communicated — customers see a balance that doesn't match what they expect after a recent purchase.",
+        "why_automatable": "Balance lookups are the simplest possible read-only API call. The remaining gap is almost entirely explainability around pending transactions, which is solvable with better response copy.",
+        "agent_resolution": "Agents confirm the balance, explain that pending transactions reduce available balance before they post, and confirm expected posting dates. Average handle time: ~2 minutes.",
+        "transcript_excerpts": [
+          "My available balance says $340 but I just got paid $1,200 two hours ago",
+          "There's a $78 charge showing as pending that I don't remember making",
+          "Your deposit is still processing and will be available by midnight tonight."
+        ],
+        "positive_detection_phrases": ["what's my balance", "check my account balance", "recent transactions", "transaction history", "show me my spending"],
+        "negative_detection_phrases": ["dispute a transaction", "why was I charged", "interest charge on my account", "transfer between accounts"],
+        "guardrails": [
+          "Always distinguish between available balance and current balance when both are present",
+          "Never confirm a pending transaction as posted until it has settled",
+          "Do not share account balance in response to the first message without completing identity verification"
+        ],
+        "data_points": [
+          {
+            "id": "dp_1",
+            "name": "Account balance (available and current)",
+            "api_source": "Account API",
+            "impact_level": "Critical",
+            "automation_impact_pct": 40,
+            "without_impact": "Balance inquiry cannot be answered at all without this data"
+          },
+          {
+            "id": "dp_2",
+            "name": "Pending transaction list with expected post dates",
+            "api_source": "Transaction History API",
+            "impact_level": "High",
+            "automation_impact_pct": 20,
+            "without_impact": "Bot cannot explain balance discrepancies caused by pending transactions, leading to unnecessary escalations"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Loan Payment and Payoff Inquiry",
+        "volume_pct": 10,
+        "frustration_score": 5.8,
+        "current_automation_rate": 20,
+        "automation_potential": 65,
+        "gap": 45,
+        "recommendation": "Partial automation",
+        "problem_summary": "Customers asking for loan payoff amounts, next payment due dates, or help making an extra payment. The bot provides due date information but cannot quote payoff amounts or process payments against loan accounts.",
+        "root_causes": "Loan payoff quotes require a calculated figure based on per diem interest, which the bot has no access to. Payment processing for loan accounts is handled by a separate loan servicing system not integrated with the bot.",
+        "why_automatable": "Due date and payment history are straightforward read calls. Payoff quotes require calculation logic. A partial automation that handles informational queries and routes payoff requests efficiently would reduce volume by ~65%.",
+        "agent_resolution": "Agents pull the loan account, calculate or retrieve the payoff quote from the loan servicing system, and walk the customer through the payment options. Average handle time: ~7 minutes.",
+        "transcript_excerpts": [
+          "I want to pay off my car loan this week. What's the exact amount I need to send?",
+          "The bot just told me my next payment is due on the 15th but it can't tell me my payoff amount",
+          "Your payoff amount as of today is $8,441.22. That figure is good through end of business on Friday."
+        ],
+        "positive_detection_phrases": ["pay off my loan", "loan payoff amount", "when is my payment due", "make an extra loan payment", "auto loan balance"],
+        "negative_detection_phrases": ["apply for a loan", "refinance my mortgage", "student loan question", "credit card payment"],
+        "guardrails": [
+          "Payoff quotes must include a good-through date and per diem amount — never quote a flat number without these",
+          "Do not process loan payments without confirming account and routing numbers from the customer",
+          "Escalate if the customer reports a payment was made but not credited to the loan"
+        ],
+        "data_points": [
+          {
+            "id": "dp_1",
+            "name": "Loan account balance and due date",
+            "api_source": "Loan Servicing API",
+            "impact_level": "Critical",
+            "automation_impact_pct": 25,
+            "without_impact": "Bot cannot answer the most basic loan inquiry without this"
+          },
+          {
+            "id": "dp_2",
+            "name": "Payoff quote calculation",
+            "api_source": "Loan Servicing API",
+            "impact_level": "High",
+            "automation_impact_pct": 22,
+            "without_impact": "Without payoff calculation the bot cannot resolve the highest-effort request type in this intent cluster"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Credit Score Drop Explanation",
+        "volume_pct": 6,
+        "frustration_score": 5.1,
+        "current_automation_rate": 10,
+        "automation_potential": 55,
+        "gap": 45,
+        "recommendation": "Partial automation",
+        "problem_summary": "Customers alarmed by a sudden drop in their credit score want to understand the cause. The bot can surface the score history but cannot access or interpret the reason codes that explain what changed.",
+        "root_causes": "Credit score reason codes are provided by the bureau but not surfaced in the bot's data access. Without them, the bot can only confirm the score dropped — not why.",
+        "why_automatable": "With reason codes exposed, an AI skill could explain the most common causes. Complex situations involving account errors still benefit from a human agent review.",
+        "agent_resolution": "Agents pull reason codes from the bureau feed and walk the customer through which factor changed. Average handle time: ~8 minutes.",
+        "transcript_excerpts": [
+          "My credit score dropped 40 points overnight and I have no idea why",
+          "Our credit score tool pulls from TransUnion. I can see your score history but not the detailed reason codes.",
+          "It looks like your oldest credit card account was closed last month, which reduced your average account age significantly."
+        ],
+        "positive_detection_phrases": ["credit score dropped", "why did my score go down", "credit score alert", "credit score changed", "my score went down"],
+        "negative_detection_phrases": ["apply for a credit card", "credit limit increase", "dispute a credit report error", "freeze my credit"],
+        "guardrails": [
+          "Never guarantee a score will recover by a specific date",
+          "Do not advise closing or opening accounts as a credit strategy — recommend consulting a credit specialist",
+          "If the customer suspects fraud or an error on their credit report, escalate to a specialist"
+        ],
+        "data_points": [
+          {
+            "id": "dp_1",
+            "name": "Credit score history",
+            "api_source": "Credit Monitoring API",
+            "impact_level": "High",
+            "automation_impact_pct": 20,
+            "without_impact": "Bot cannot confirm the score change that prompted the contact"
+          },
+          {
+            "id": "dp_2",
+            "name": "Bureau reason codes",
+            "api_source": "Credit Bureau Feed",
+            "impact_level": "Critical",
+            "automation_impact_pct": 30,
+            "without_impact": "Without reason codes the bot can only confirm a drop occurred — cannot explain it, which is the entire reason the customer contacted support"
+          }
+        ]
+      }
+    ]
+  };
+
+  document.getElementById('cp-input-state').style.display = 'none';
+  document.getElementById('cp-loading-state').style.display = 'none';
+  renderAnalysis(analysisData);
 }
 
 function resetCopilot() {
