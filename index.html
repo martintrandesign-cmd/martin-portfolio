@@ -157,6 +157,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .ptable td{padding:9px 8px 9px 0;border-bottom:1px solid rgba(59,42,26,0.04);font-size:12px;vertical-align:middle;}
 .ptable tr.intent-tr{cursor:pointer;}
 .ptable tr.intent-tr:hover td{background:var(--faint);}
+.ptable tr.intent-tr.expanded td{background:rgba(59,42,26,0.04);}
 .chevron{font-size:12px;opacity:0.3;transition:transform 0.2s;display:inline-block;}
 .chevron.open{transform:rotate(90deg);}
 .badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid;}
@@ -843,6 +844,7 @@ function renderDetail(intent) {
   const agentRes = `<div class="agent-block">${esc(intent.agent_resolution)}</div>`;
 
   return `<div class="detail-inner">
+    <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.35;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(59,42,26,0.07);">${esc(intent.name)}</div>
     <div class="auto-summary">
       <div class="auto-stat"><div class="n" id="apct-${intent.id}">${intent.automation_potential}%</div><div class="l">Automation potential</div></div>
       <div class="auto-bar-track"><div class="auto-bar-fill" id="abar-${intent.id}" style="width:${intent.automation_potential}%;"></div></div>
@@ -920,12 +922,15 @@ function toggleDetail(intentId) {
     if (i.id !== intentId) {
       const r = document.getElementById('detail-' + i.id);
       const c = document.getElementById('chev-' + i.id);
+      const tr = document.getElementById('itr-' + i.id);
       if (r) r.style.display = 'none';
       if (c) c.classList.remove('open');
+      if (tr) tr.classList.remove('expanded');
     }
   });
   row.style.display = isHidden ? '' : 'none';
   chev.classList.toggle('open', isHidden);
+  document.getElementById('itr-' + intentId).classList.toggle('expanded', isHidden);
 }
 
 function exportIntent(intentId) {
