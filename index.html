@@ -752,15 +752,20 @@ async function analyzeTranscripts() {
       })
     });
     const d = await r.json();
+    if (d.error) throw new Error('API error: ' + JSON.stringify(d.error));
     let raw = d.content?.[0]?.text || '{}';
     raw = raw.replace(/```json/g,'').replace(/```/g,'').trim();
-    analysisData = JSON.parse(raw);
+    try {
+      analysisData = JSON.parse(raw);
+    } catch(parseErr) {
+      throw new Error('JSON parse failed. Raw response: ' + raw.substring(0, 300));
+    }
     document.getElementById('cp-loading-state').style.display = 'none';
     renderAnalysis(analysisData);
   } catch(e) {
     document.getElementById('cp-loading-state').style.display = 'none';
     document.getElementById('cp-input-state').style.display = 'block';
-    alert('Error analyzing transcripts. Please try again.');
+    alert('Error: ' + e.message);
   }
 }
 
