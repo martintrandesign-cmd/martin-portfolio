@@ -779,8 +779,7 @@ function renderAnalysis(data) {
   document.getElementById('summary-grid').innerHTML =
     sum(data.total_transcripts || intents.length, 'Transcripts') +
     sum(intents.length, 'Intents found') +
-    sum(highPotential, 'High potential') +
-    sum(data.time_saved_estimate || 'N/A', 'Time saved');
+    sum(highPotential, 'High potential');
 
   // Intent bars
   document.getElementById('intent-bars').innerHTML = intents.map(i =>
@@ -1279,8 +1278,8 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
           "I already tried twice. Same result. I'm standing in line right now",
           "I can see your card was flagged by our fraud system due to an unusual purchase pattern. I've cleared the flag and your card should work now."
         ],
-        "positive_detection_phrases": ["card was declined", "card not working", "payment declined", "card got rejected", "can't use my card"],
-        "negative_detection_phrases": ["card was stolen", "cancel my card", "card expired", "dispute a charge"],
+        "positive_detection_phrases": ["my card is declining but I have money in my account", "I tried to pay and my card got rejected", "my debit card isn't working at the store", "card was just declined and I don't know why", "I can't use my card and there's nothing wrong with it"],
+        "negative_detection_phrases": ["someone used my card without my permission", "I want to cancel my card", "my card is expired", "there's a charge I don't recognize"],
         "guardrails": [
           "Never confirm a fraud flag has been cleared without verifying agent authorization",
           "Do not promise card will work after troubleshooting — confirm status only",
@@ -1331,8 +1330,8 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
           "That's ridiculous I'm literally talking to you. Can I speak to a human",
           "I can absolutely open this dispute for you right here. I've flagged the $312 charge as unauthorized and opened case number DSP-44821."
         ],
-        "positive_detection_phrases": ["dispute a charge", "unauthorized transaction", "charge I don't recognize", "didn't make this purchase", "fraudulent charge on my account"],
-        "negative_detection_phrases": ["cancel a subscription", "request a refund from a merchant", "return a purchase", "billing error on my loan"],
+        "positive_detection_phrases": ["there's a charge on my account I don't recognize", "I never made this purchase but it's showing on my statement", "someone charged my card and it wasn't me", "I want to dispute a transaction from last week", "there's a weird charge I've never seen before"],
+        "negative_detection_phrases": ["I want to cancel my subscription through the app", "the merchant said they'd refund me but I haven't seen it", "I returned something and need my money back", "my loan statement has a fee I don't understand"],
         "guardrails": [
           "Confirm transaction details with the customer before opening a dispute — never dispute without explicit confirmation",
           "Do not promise a specific credit timeline — use 'typically within 3 business days'",
@@ -1383,8 +1382,8 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
           "I've been locked out for two days and every time I call it just sends me to the bot",
           "I've manually verified your identity and sent a reset link to your email on file."
         ],
-        "positive_detection_phrases": ["can't log in", "forgot my password", "account is locked", "locked out", "reset my password"],
-        "negative_detection_phrases": ["change my email address", "update my phone number", "close my account", "suspicious login I didn't make"],
+        "positive_detection_phrases": ["I can't log into my account", "it says my account is locked and I don't know why", "I forgot my password and can't get back in", "I've been locked out for days and nothing is working", "I'm trying to reset my password but the link isn't working"],
+        "negative_detection_phrases": ["I need to update the email on my account", "I got a new phone and need to change my number", "I want to close my account", "someone logged into my account without me"],
         "guardrails": [
           "Never bypass two-factor authentication without completing an approved alternative verification path",
           "Lock the account after 3 failed verification attempts and escalate to a human agent",
@@ -1435,8 +1434,8 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
           "There's a $78 charge showing as pending that I don't remember making",
           "Your deposit is still processing and will be available by midnight tonight."
         ],
-        "positive_detection_phrases": ["what's my balance", "check my account balance", "recent transactions", "transaction history", "show me my spending"],
-        "negative_detection_phrases": ["dispute a transaction", "why was I charged", "interest charge on my account", "transfer between accounts"],
+        "positive_detection_phrases": ["what's my current balance", "can you show me my recent transactions", "how much do I have in my account right now", "I need to check what came out of my account this week", "I got paid but my balance doesn't look right"],
+        "negative_detection_phrases": ["there's a charge I want to dispute", "why did you take money out of my account", "I was charged interest and I don't understand why", "I need to move money between my accounts"],
         "guardrails": [
           "Always distinguish between available balance and current balance when both are present",
           "Never confirm a pending transaction as posted until it has settled",
@@ -1479,8 +1478,8 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
           "The bot just told me my next payment is due on the 15th but it can't tell me my payoff amount",
           "Your payoff amount as of today is $8,441.22. That figure is good through end of business on Friday."
         ],
-        "positive_detection_phrases": ["pay off my loan", "loan payoff amount", "when is my payment due", "make an extra loan payment", "auto loan balance"],
-        "negative_detection_phrases": ["apply for a loan", "refinance my mortgage", "student loan question", "credit card payment"],
+        "positive_detection_phrases": ["I want to pay off my car loan this month, what's the total?", "how much do I owe on my loan if I pay it off today", "when is my next loan payment due", "I want to make an extra payment on my loan", "can I see my remaining loan balance"],
+        "negative_detection_phrases": ["I'm looking to apply for a personal loan", "I want to refinance my mortgage", "I have a question about my student loans", "I need to pay my credit card bill"],
         "guardrails": [
           "Payoff quotes must include a good-through date and per diem amount — never quote a flat number without these",
           "Do not process loan payments without confirming account and routing numbers from the customer",
@@ -1523,8 +1522,8 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
           "Our credit score tool pulls from TransUnion. I can see your score history but not the detailed reason codes.",
           "It looks like your oldest credit card account was closed last month, which reduced your average account age significantly."
         ],
-        "positive_detection_phrases": ["credit score dropped", "why did my score go down", "credit score alert", "credit score changed", "my score went down"],
-        "negative_detection_phrases": ["apply for a credit card", "credit limit increase", "dispute a credit report error", "freeze my credit"],
+        "positive_detection_phrases": ["my credit score dropped like 40 points and I have no idea why", "I got an alert that my credit score changed", "why did my score go down this month", "my credit score was fine last week and now it's not", "something happened to my credit score and I don't know what"],
+        "negative_detection_phrases": ["I want to apply for a new credit card", "can I get a higher credit limit", "there's something wrong on my credit report I need removed", "I want to put a freeze on my credit"],
         "guardrails": [
           "Never guarantee a score will recover by a specific date",
           "Do not advise closing or opening accounts as a credit strategy — recommend consulting a credit specialist",
@@ -1553,8 +1552,16 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
   };
 
   document.getElementById('cp-input-state').style.display = 'none';
-  document.getElementById('cp-loading-state').style.display = 'none';
-  renderAnalysis(analysisData);
+  document.getElementById('cp-loading-state').style.display = 'block';
+
+  setTimeout(() => {
+    document.getElementById('cp-loading-state').style.display = 'none';
+    const resultsEl = document.getElementById('cp-results-state');
+    resultsEl.style.opacity = '0';
+    renderAnalysis(analysisData);
+    resultsEl.style.transition = 'opacity 0.5s ease';
+    requestAnimationFrame(() => requestAnimationFrame(() => { resultsEl.style.opacity = '1'; }));
+  }, 2800);
 }
 
 function resetCopilot() {
