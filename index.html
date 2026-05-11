@@ -1660,6 +1660,7 @@ function esc(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+setTimeout(() => { document.getElementById('chat-input').focus(); }, 500);
 </script>
 </body>
 </html>
