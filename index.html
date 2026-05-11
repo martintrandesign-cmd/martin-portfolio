@@ -571,7 +571,7 @@ async function sendChat() {
     chatHistory.push({ role: 'assistant', content: rep });
   } catch(e) {
     typ.remove();
-    appendMartinMsg('Hit a snag, try again?', null);
+    appendMartinMsg('Something went wrong on my end. You can reach me directly at <a href="mailto:martintrandesign@gmail.com" style="color:var(--text);text-decoration:underline;">martintrandesign@gmail.com</a> and in the meantime, feel free to check out my <a href="https://www.linkedin.com/in/martintrandesign/" target="_blank" style="color:var(--text);text-decoration:underline;">LinkedIn</a>.', null);
     chatHistory.pop();
   }
   scrollFeed();
