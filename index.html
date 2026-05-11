@@ -571,7 +571,7 @@ async function sendChat() {
     chatHistory.push({ role: 'assistant', content: rep });
   } catch(e) {
     typ.remove();
-    appendMartinMsg('Something went wrong on my end. You can reach me directly at <a href="mailto:martintrandesign@gmail.com" style="color:var(--text);text-decoration:underline;">martintrandesign@gmail.com</a> and in the meantime, feel free to check out my <a href="https://www.linkedin.com/in/martintrandesign/" target="_blank" style="color:var(--text);text-decoration:underline;">LinkedIn</a>.', null);
+    appendMartinMsgHTML('Something went wrong on my end. You can reach me directly at <a href="mailto:martintrandesign@gmail.com" style="color:var(--text);text-decoration:underline;">martintrandesign@gmail.com</a> and in the meantime, feel free to check out my <a href="https://www.linkedin.com/in/martintrandesign/" target="_blank" style="color:var(--text);text-decoration:underline;">LinkedIn</a>.');
     chatHistory.pop();
   }
   scrollFeed();
@@ -597,6 +597,16 @@ function appendMartinMsg(text, fwdQ) {
     inner += '<button class="fwd-btn" onclick="window.location.href=\'mailto:' + EMAIL + '?subject=' + sub + '&body=' + bod + '\'">Forward to Martin ↗</button>';
   }
   wrap.innerHTML = inner;
+  msgs.appendChild(wrap);
+  scrollFeed();
+  return wrap;
+}
+
+function appendMartinMsgHTML(html) {
+  const msgs = document.getElementById('messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap-in';
+  wrap.innerHTML = '<div class="msg-from">Martin</div><div class="msg-bubble">' + html + '</div>';
   msgs.appendChild(wrap);
   scrollFeed();
   return wrap;
