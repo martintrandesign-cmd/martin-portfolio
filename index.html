@@ -379,6 +379,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
         <button onclick="loadDummyTranscripts()" style="font-size:12px;border:1px solid rgba(59,42,26,0.15);border-radius:3px;padding:9px 16px;cursor:pointer;opacity:0.5;font-family:var(--font);color:var(--text);background:transparent;">Test with dummy transcripts</button>
         <span id="upload-status" style="font-size:11px;opacity:0.4;"></span>
       </div>
+      <div style="font-size:11px;opacity:0.35;margin-top:10px;">Uploads are capped at 50,000 characters to keep this tool free to use. For larger batches, <a href="mailto:martintrandesign@gmail.com?subject=Conversation Skill Gen - large batch" style="color:var(--text);text-decoration:underline;font-family:var(--font);">get in touch</a>.</div>
     </div>
 
     <!-- Loading state -->
@@ -762,9 +763,15 @@ JSON structure:
 INTENT ANALYSIS DATA:
 `;
 
+const TRANSCRIPT_CHAR_LIMIT = 50000;
+
 async function analyzeTranscripts() {
   const text = document.getElementById('transcript-input').value.trim();
   if (!text) { alert('Please paste some transcripts first.'); return; }
+  if (text.length > TRANSCRIPT_CHAR_LIMIT) {
+    alert('This transcript exceeds the 50,000 character limit. Please trim it down or get in touch with Martin for larger batches.');
+    return;
+  }
 
   document.getElementById('cp-input-state').style.display = 'none';
   document.getElementById('cp-loading-state').style.display = 'block';
