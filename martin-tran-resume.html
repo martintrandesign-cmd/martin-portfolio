@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Martin Tran, Resume</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans@5.0.8/index.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --text: #3B2A1A;
+    --bg: #FEFCF3;
+    --muted: rgba(59,42,26,0.38);
+    --border: rgba(59,42,26,0.1);
+    --faint: rgba(59,42,26,0.04);
+    --font: 'IBM Plex Sans', sans-serif;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.6;
+    padding: 48px;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .name {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+
+  .title {
+    font-size: 12px;
+    opacity: 0.5;
+    margin-bottom: 10px;
+  }
+
+  .contact {
+    display: flex;
+    gap: 20px;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    opacity: 0.45;
+  }
+
+  .contact a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  /* Summary */
+  .summary {
+    font-size: 11.5px;
+    line-height: 1.7;
+    opacity: 0.7;
+    margin-bottom: 28px;
+    padding-left: 14px;
+    border-left: 2px solid var(--border);
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 24px;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.3;
+    margin-bottom: 14px;
+  }
+
+  /* Experience */
+  .role {
+    margin-bottom: 18px;
+  }
+
+  .role-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+  }
+
+  .role-title {
+    font-weight: 600;
+    font-size: 11.5px;
+  }
+
+  .role-dates {
+    font-size: 9.5px;
+    opacity: 0.35;
+    letter-spacing: 0.03em;
+  }
+
+  .role-company {
+    font-size: 10px;
+    opacity: 0.45;
+    margin-bottom: 7px;
+  }
+
+  .role ul {
+    padding-left: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .role li {
+    opacity: 0.65;
+    font-size: 10.5px;
+    line-height: 1.65;
+  }
+
+  /* Skills */
+  .skill-group {
+    margin-bottom: 8px;
+  }
+
+  .skill-group-label {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.3;
+    display: inline;
+    margin-right: 6px;
+  }
+
+  .skill-group-vals {
+    font-size: 10.5px;
+    opacity: 0.6;
+    display: inline;
+    line-height: 1.7;
+  }
+
+  /* Education / Languages */
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+
+  .meta-main {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+  }
+
+  .meta-sub {
+    font-size: 10px;
+    opacity: 0.45;
+  }
+
+  .meta-detail {
+    font-size: 10px;
+    opacity: 0.45;
+    margin-top: 2px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+  /* Print */
+  @media print {
+    body {
+      background: white;
+      padding: 36px;
+    }
+    .summary { border-left-color: #ccc; }
+  }
+
+  @page {
+    margin: 0;
+    size: Letter;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="name">Martin Phi Vu Tran</div>
+    <div class="title">Conversation Design Lead</div>
+    <div class="contact">
+      <a href="mailto:martintrandesign@gmail.com">martintrandesign@gmail.com</a>
+      <a href="https://www.linkedin.com/in/martintrandesign/" target="_blank">linkedin.com/in/martintrandesign</a>
+      <a href="https://www.martintrandesign.com" target="_blank">martintrandesign.com</a>
+    </div>
+  </div>
+
+  <div class="summary">
+    Conversation Design Lead with 8 years of experience building AI-powered customer experiences at scale. Founded and grew Coinbase's conversation design practice from zero, driving a 67% automation rate and over $70M in cost savings. Deep expertise across the full stack of conversational AI, NLU modeling, intent architecture, LLM prompt design, API scoping, and cross-functional product strategy. Builder mentality: designed and shipped internal AI tooling used across the org. Seeking roles at the intersection of UX and AI.
+  </div>
+
+  <div class="section">
+    <div class="section-label">Experience</div>
+
+    <div class="role">
+      <div class="role-header">
+        <div class="role-title">Conversation Design Lead</div>
+        <div class="role-dates">July 2021 , Present</div>
+      </div>
+      <div class="role-company">Coinbase &nbsp;·&nbsp; Remote, Ringoes, NJ</div>
+      <ul>
+        <li>Founded Coinbase's conversation design practice, first hire of its kind, establishing design standards, automation patterns, tooling, and cross-team processes from the ground up</li>
+        <li>Drove a 5,300 bps improvement in chatbot automation rate, delivering over $70M in verified cost savings across the customer support organization</li>
+        <li>Improved bot CSAT by 2,200 bps</li>
+        <li>Built the Conversation Design Co-pilot: an LLM-powered internal tool (developed with Cursor and Claude) that analyzes support transcripts, scores intents by automation potential, and generates complete AI skill specifications, reducing skill creation from days or weeks to minutes</li>
+        <li>Designed and specced a no-code Figma bot builder adopted by the full team to design, test, and ship bot flows with configurable NLU, fallbacks, and escalation logic</li>
+        <li>Led migration of the conversational AI platform from a third-party vendor to Coinbase's proprietary in-house AI infrastructure</li>
+        <li>Defined and maintained the NLU improvement strategy and full intent taxonomy across a high-volume, multi-product environment with significant intent collision risk</li>
+        <li>Partnered with engineering to define required API outputs and data lookups needed to unlock automated resolutions across crypto, compliance, and account management use cases</li>
+        <li>Trained and mentored conversation designers; contributed UX and UI improvements to the Coinbase Help Center</li>
+      </ul>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="role">
+      <div class="role-header">
+        <div class="role-title">UX and Conversational Designer</div>
+        <div class="role-dates">October 2018 , July 2021</div>
+      </div>
+      <div class="role-company">LivePerson &nbsp;·&nbsp; Remote &nbsp;·&nbsp; via Conversable acquisition</div>
+      <ul>
+        <li>Designed end-to-end automated conversation experiences for Fortune 500 clients across Facebook Messenger, Apple Business Chat, and Web Messaging</li>
+        <li>Led UX and UI design of Chipotle's full-menu ordering webview on Facebook Messenger, a multi-step transactional interface inside a chat environment, architected to scale across restaurant chains and platforms</li>
+        <li>Delivered a complete Apple Business Chat automation flow for Home Depot spanning product discovery, order status, and support escalation</li>
+        <li>Designed conversational AI flows for Lowe's, Spirit Airlines, and Aramark across multiple channels and customer journey stages</li>
+      </ul>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="role">
+      <div class="role-header">
+        <div class="role-title">UX and Conversational Designer</div>
+        <div class="role-dates">May 2017 , October 2018</div>
+      </div>
+      <div class="role-company">Conversable &nbsp;·&nbsp; Dallas, TX</div>
+      <ul>
+        <li>Designed voice and messaging chatbot experiences for Dunkin' Donuts, McDonald's Canada, Wingstop, General Motors, Marvel, and Facebook across Alexa, Google Home, and Facebook Messenger</li>
+        <li>Built reusable industry conversation templates and documented design best practices to accelerate team output and support onboarding</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Skills</div>
+    <div class="skill-group">
+      <span class="skill-group-label">Design</span>
+      <span class="skill-group-vals">Conversation Design, UX Design, Product Design, Voice UI, Multimodal Interface Design, Information Architecture, Design Systems, Interaction Design, Prototyping, User Research</span>
+    </div>
+    <div class="skill-group">
+      <span class="skill-group-label">AI and NLU</span>
+      <span class="skill-group-vals">Large Language Models (LLM), Natural Language Understanding (NLU), Prompt Engineering, AI Skill Design, Intent Architecture, Entity Design, Conversational AI, Chatbot Development, Automation Strategy</span>
+    </div>
+    <div class="skill-group">
+      <span class="skill-group-label">Technical</span>
+      <span class="skill-group-vals">API Scoping and Requirements Definition, Omnichannel Architecture, Data Analysis, CSAT and Automation Metrics, No-Code Tool Design</span>
+    </div>
+    <div class="skill-group">
+      <span class="skill-group-label">Tools</span>
+      <span class="skill-group-vals">Figma, Cursor, Claude, ChatGPT, Lucidchart, Snowflake, Adobe Creative Suite, Jira</span>
+    </div>
+    <div class="skill-group">
+      <span class="skill-group-label">Leadership</span>
+      <span class="skill-group-vals">Cross-functional Leadership, Stakeholder Management, Roadmap Definition, Design Mentorship, Agile and Scrum</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Education</div>
+    <div class="meta-row">
+      <div class="meta-main">Bachelor of Arts, Arts and Technology</div>
+      <div class="meta-sub">2017</div>
+    </div>
+    <div class="meta-detail">University of Texas at Dallas &nbsp;·&nbsp; UX Design emphasis &nbsp;·&nbsp; Focus: Human-Computer Interaction</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Languages</div>
+    <div class="meta-detail" style="opacity:0.65;">English (fluent) &nbsp;·&nbsp; Norwegian (fluent) &nbsp;·&nbsp; Vietnamese (spoken)</div>
+  </div>
+
+</body>
+</html>
