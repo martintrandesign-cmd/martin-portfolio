@@ -870,7 +870,7 @@ function renderDetail(intent) {
     </table>
     <div class="detail-footer">
       <button class="gen-skill-btn" onclick="generateSkill(${intent.id})">Generate AI skill</button>
-      <button class="outline-btn">Export intent analysis</button>
+      <button class="outline-btn" onclick="exportIntent(${intent.id})">Export intent analysis</button>
     </div>
   </div>`;
 }
@@ -913,8 +913,69 @@ function toggleDetail(intentId) {
   const row = document.getElementById('detail-' + intentId);
   const chev = document.getElementById('chev-' + intentId);
   const isHidden = row.style.display === 'none';
+  // Close all other open intents
+  (analysisData.intents || []).forEach(i => {
+    if (i.id !== intentId) {
+      const r = document.getElementById('detail-' + i.id);
+      const c = document.getElementById('chev-' + i.id);
+      if (r) r.style.display = 'none';
+      if (c) c.classList.remove('open');
+    }
+  });
   row.style.display = isHidden ? '' : 'none';
   chev.classList.toggle('open', isHidden);
+}
+
+function exportIntent(intentId) {
+  const intent = (analysisData.intents || []).find(i => i.id === intentId);
+  if (!intent) return;
+  const lines = [
+    'INTENT ANALYSIS EXPORT',
+    '======================',
+    '',
+    'Intent: ' + intent.name,
+    'Volume: ' + intent.volume_pct + '%',
+    'Automated Today: ' + intent.current_automation_rate + '%',
+    'AI Ceiling: ' + intent.automation_potential + '%',
+    'Opportunity Gap: +' + intent.gap + '%',
+    'Frustration Score: ' + intent.frustration_score + '/10',
+    'Recommendation: ' + intent.recommendation,
+    '',
+    'PROBLEM SUMMARY',
+    intent.problem_summary,
+    '',
+    'ROOT CAUSES',
+    intent.root_causes,
+    '',
+    'WHY AUTOMATABLE',
+    intent.why_automatable,
+    '',
+    'HOW AGENTS RESOLVE IT',
+    intent.agent_resolution,
+    '',
+    'TRANSCRIPT EXCERPTS',
+    ...(intent.transcript_excerpts || []).map((e, i) => (i+1) + '. ' + e),
+    '',
+    'POSITIVE DETECTION PHRASES',
+    ...(intent.positive_detection_phrases || []).map(p => '- ' + p),
+    '',
+    'NEGATIVE DETECTION PHRASES',
+    ...(intent.negative_detection_phrases || []).map(p => '- ' + p),
+    '',
+    'GUARDRAILS',
+    ...(intent.guardrails || []).map(g => '- ' + g),
+    '',
+    'API DATA POINTS',
+    ...(intent.data_points || []).map(dp =>
+      dp.name + ' (' + dp.api_source + ') — Impact: ' + dp.impact_level + ', Auto drop if missing: -' + dp.automation_impact_pct + '%'
+    ),
+  ];
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = intent.name.replace(/\s+/g, '-').toLowerCase() + '-analysis.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
 
 async function generateSkill(intentId) {
