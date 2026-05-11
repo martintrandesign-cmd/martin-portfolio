@@ -27,15 +27,16 @@ Conversation Design Lead with 8 years of experience building AI-powered customer
 ### UX and Conversational Designer
 **LivePerson** (via Conversable acquisition) | Remote | October 2018 , July 2021
 
-- Designed end-to-end automated conversation experiences for Fortune 500 clients across Facebook Messenger, Apple Business Chat, and Web Messaging channels
-- Led UX and UI design of Chipotle's full-menu ordering webview on Facebook Messenger, a multi-step transactional interface embedded inside a chat environment, architected to scale across additional restaurant chains and platforms
-- Delivered a complete Apple Business Chat automation flow for Home Depot spanning product discovery, order status, and support escalation
+- Collaborated directly with Fortune 500 clients through discovery sessions, design presentations, and technical scoping to define requirements and deliver production-ready conversational AI experiences
+- Designed end-to-end automated conversation experiences across Facebook Messenger, Apple Messages for Business, and Web Messaging
+- Led UX and UI design of Chipotle's full-menu ordering webview on Facebook Messenger, a multi-step transactional interface inside a chat environment, architected to scale across restaurant chains and platforms
+- Delivered a complete Apple Messages for Business webview automation flow for Home Depot spanning product discovery, order status, and support escalation
 - Designed conversational AI flows for Lowe's, Spirit Airlines, and Aramark across multiple channels and customer journey stages
 
 ### UX and Conversational Designer
 **Conversable** | Dallas, TX | May 2017 , October 2018
 
-- Designed voice and messaging chatbot experiences for Dunkin' Donuts, McDonald's Canada, Wingstop, General Motors, Marvel, and Facebook across Alexa, Google Home, and Facebook Messenger
+- Worked directly with clients including Dunkin' Donuts, McDonald's Canada, Wingstop, General Motors, Marvel, and Facebook through discovery, design presentations, and scoping to deliver voice and messaging chatbot experiences across Alexa, Google Home, and Facebook Messenger
 - Built reusable industry conversation templates and documented design best practices to accelerate team output and streamline onboarding for new designers
 
 ---
