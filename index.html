@@ -382,8 +382,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     <div id="cp-loading-state" style="display:none;">
       <div class="loading-wrap">
         <div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
-        <div class="loading-text">Analyzing transcripts...</div>
-        <div style="font-size:12px;opacity:0.4;margin-top:8px;text-align:center;">This may take up to 30 seconds depending on how many transcripts were uploaded.</div>
+        <div id="loading-main-text" class="loading-text">Analyzing transcripts...</div>
+        <div id="loading-sub-text" style="font-size:12px;opacity:0.4;margin-top:8px;text-align:center;">This may take up to 30 seconds depending on how many transcripts were uploaded.</div>
       </div>
     </div>
 
@@ -1552,13 +1552,18 @@ Customer: That actually makes a lot of sense. Thank you for digging into it.`;
   };
 
   document.getElementById('cp-input-state').style.display = 'none';
+  document.getElementById('loading-main-text').style.display = 'none';
+  document.getElementById('loading-sub-text').style.display = 'none';
   document.getElementById('cp-loading-state').style.display = 'block';
 
   setTimeout(() => {
+    document.getElementById('loading-main-text').style.display = '';
+    document.getElementById('loading-sub-text').style.display = '';
     document.getElementById('cp-loading-state').style.display = 'none';
     const resultsEl = document.getElementById('cp-results-state');
     resultsEl.style.opacity = '0';
     renderAnalysis(analysisData);
+    document.getElementById('results-meta').innerHTML += '<span id="dummy-badge" style="margin-left:10px;font-size:11px;padding:2px 8px;border:1px solid rgba(59,42,26,0.2);border-radius:3px;opacity:0.5;letter-spacing:0.03em;">Demo data</span>';
     resultsEl.style.transition = 'opacity 0.5s ease';
     requestAnimationFrame(() => requestAnimationFrame(() => { resultsEl.style.opacity = '1'; }));
   }, 2800);
