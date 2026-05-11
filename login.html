@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martin Tran</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans@5.0.8/index.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #FEFCF3;
+  --text: #3B2A1A;
+  --border: rgba(59,42,26,0.1);
+  --font: 'IBM Plex Sans', sans-serif;
+}
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+}
+.wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.name {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  opacity: 0.8;
+}
+.hint {
+  font-size: 11px;
+  opacity: 0.35;
+  margin-top: -8px;
+}
+input {
+  font-family: var(--font);
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 6px 0;
+  width: 200px;
+  text-align: center;
+  outline: none;
+  color: var(--text);
+}
+input::placeholder { opacity: 0.3; color: var(--text); }
+.error {
+  font-size: 11px;
+  color: rgba(160,40,20,0.7);
+  opacity: 0;
+  transition: opacity 0.2s;
+  min-height: 16px;
+}
+.error.visible { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="name">Martin Tran</div>
+  <div class="hint">Enter the password from the resume to continue.</div>
+  <input type="password" id="pw-input" placeholder="Password" autocomplete="off" autofocus/>
+  <div class="error" id="pw-error">Incorrect password</div>
+</div>
+<script>
+const input = document.getElementById('pw-input');
+const error = document.getElementById('pw-error');
+
+input.addEventListener('keydown', async function(e) {
+  if (e.key !== 'Enter') return;
+  const password = input.value;
+  input.value = '';
+
+  const res = await fetch('/api/auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password }),
+  });
+
+  if (res.ok) {
+    window.location.href = '/';
+  } else {
+    error.classList.add('visible');
+    setTimeout(() => error.classList.remove('visible'), 2000);
+  }
+});
+</script>
+</body>
+</html>
