@@ -61,11 +61,18 @@ input::placeholder { opacity: 0.3; color: var(--text); }
   border: none;
   padding: 9px 24px;
   cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.1s;
   width: 200px;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.submit-btn:hover { opacity: 1; }
+.submit-btn.visible {
+  opacity: 0.85;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.submit-btn.visible:hover { opacity: 1; }
 .error {
   font-size: 11px;
   color: rgba(160,40,20,0.7);
@@ -107,11 +114,21 @@ async function tryPassword() {
   }
 }
 
+const btn = document.getElementById('pw-submit');
+
+input.addEventListener('input', function() {
+  if (input.value.length > 0) {
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+});
+
 input.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') tryPassword();
 });
 
-document.getElementById('pw-submit').addEventListener('click', tryPassword);
+btn.addEventListener('click', tryPassword);
 </script>
 </body>
 </html>
