@@ -51,6 +51,21 @@ input {
   color: var(--text);
 }
 input::placeholder { opacity: 0.3; color: var(--text); }
+.submit-btn {
+  font-family: var(--font);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  padding: 9px 24px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.1s;
+  width: 200px;
+}
+.submit-btn:hover { opacity: 1; }
 .error {
   font-size: 11px;
   color: rgba(160,40,20,0.7);
@@ -65,16 +80,17 @@ input::placeholder { opacity: 0.3; color: var(--text); }
 <div class="wrap">
   <div class="name">Martin Tran</div>
   <div class="hint">Enter the password from the resume to continue.</div>
-  <input type="password" id="pw-input" placeholder="Password" autocomplete="off" autofocus/>
+  <input type="password" id="pw-input" placeholder="Password" autocomplete="off" autofocus enterkeyhint="done"/>
+  <button class="submit-btn" id="pw-submit">Continue</button>
   <div class="error" id="pw-error">Incorrect password</div>
 </div>
 <script>
 const input = document.getElementById('pw-input');
 const error = document.getElementById('pw-error');
 
-input.addEventListener('keydown', async function(e) {
-  if (e.key !== 'Enter') return;
+async function tryPassword() {
   const password = input.value;
+  if (!password) return;
   input.value = '';
 
   const res = await fetch('/api/auth', {
@@ -89,7 +105,13 @@ input.addEventListener('keydown', async function(e) {
     error.classList.add('visible');
     setTimeout(() => error.classList.remove('visible'), 2000);
   }
+}
+
+input.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') tryPassword();
 });
+
+document.getElementById('pw-submit').addEventListener('click', tryPassword);
 </script>
 </body>
 </html>
