@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surface OS — Concept Prototype</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-sans@5.0.8/index.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #1E1C1A;
+  --white: #F6F4EF;
+  --border: rgba(30,28,26,0.14);
+  --faint: rgba(30,28,26,0.05);
+  --font: 'IBM Plex Sans', sans-serif;
+  --os-bg: #E8E5DE;
+  --chase: #004C97;
+  --coned: #D4610A;
+  --verizon: #B3000B;
+}
+html, body { height: 100%; background: var(--white); color: var(--black); font-family: var(--font); font-size: 14px; }
+
+/* ── PAGE ── */
+.page { max-width: 1000px; margin: 0 auto; padding: 48px 40px 80px; }
+
+.proj-back { display: inline-block; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.35; margin-bottom: 24px; cursor: pointer; text-decoration: none; color: var(--black); }
+.proj-back:hover { opacity: 0.7; }
+
+.proj-header { padding-bottom: 28px; border-bottom: 1px solid var(--black); margin-bottom: 36px; }
+.proj-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+.proj-sub { font-size: 12.5px; opacity: 0.45; line-height: 1.7; max-width: 560px; margin-bottom: 20px; }
+.proj-meta { display: flex; gap: 28px; }
+.proj-meta-item .label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.28; margin-bottom: 3px; }
+.proj-meta-item .val { font-size: 12px; font-weight: 600; opacity: 0.7; }
+
+/* ── FLOW TABS ── */
+.flow-tabs { display: flex; border: 1px solid var(--black); width: fit-content; margin-bottom: 36px; }
+.flow-tab { padding: 9px 22px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-right: 1px solid var(--black); opacity: 0.38; user-select: none; transition: background 0.1s, opacity 0.1s; white-space: nowrap; }
+.flow-tab:last-child { border-right: none; }
+.flow-tab.active { background: var(--black); color: var(--white); opacity: 1; }
+
+/* ── PROTOTYPE LAYOUT ── */
+.prototype-area { display: flex; gap: 52px; align-items: flex-start; }
+
+/* ── PHONE ── */
+.phone-wrap { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+.phone {
+  width: 340px; height: 736px;
+  border-radius: 50px;
+  border: 9px solid var(--black);
+  background: var(--os-bg);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 28px 60px rgba(30,28,26,0.18), 0 4px 12px rgba(30,28,26,0.1);
+  cursor: pointer;
+  user-select: none;
+}
+/* Side button */
+.phone::after {
+  content: '';
+  position: absolute;
+  right: -13px; top: 120px;
+  width: 4px; height: 52px;
+  background: var(--black);
+  border-radius: 0 3px 3px 0;
+}
+
+/* Dynamic island */
+.dynamic-island {
+  position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+  width: 110px; height: 28px; background: var(--black); border-radius: 20px; z-index: 50;
+}
+
+/* Status bar */
+.status-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 22px 6px; margin-top: 40px; flex-shrink: 0;
+}
+.status-time { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; opacity: 0.85; }
+.status-right { display: flex; align-items: center; gap: 4px; }
+.status-icon { font-size: 8px; opacity: 0.55; letter-spacing: 0.04em; }
+
+/* Screen */
+.screen {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--os-bg); display: flex; flex-direction: column;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.screen.active { opacity: 1; pointer-events: auto; }
+
+.screen-body { flex: 1; padding: 4px 18px 0; overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+.screen-scroll { flex: 1; overflow-y: auto; padding-bottom: 8px; }
+.screen-scroll::-webkit-scrollbar { display: none; }
+
+/* OS input bar */
+.os-input { display: flex; align-items: center; border-top: 1px solid rgba(30,28,26,0.2); background: var(--white); padding: 0 14px; height: 50px; flex-shrink: 0; }
+.os-input-text { flex: 1; font-size: 12px; opacity: 0.3; font-family: var(--font); }
+.os-input-text.typed { opacity: 0.8; }
+.os-send { width: 26px; height: 26px; border: 1px solid var(--black); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
+/* Boundary bar */
+.boundary-bar { display: flex; align-items: center; gap: 6px; padding: 5px 18px; background: rgba(30,28,26,0.06); border-bottom: 1px solid rgba(30,28,26,0.08); flex-shrink: 0; }
+.boundary-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--black); opacity: 0.5; flex-shrink: 0; }
+.boundary-label { font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.4; }
+
+/* HOME */
+.home-date { font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; opacity: 0.3; margin: 18px 0 6px; }
+.home-greeting { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; opacity: 0.85; margin-bottom: 6px; }
+.home-summary { font-size: 11px; opacity: 0.4; margin-bottom: 16px; line-height: 1.5; }
+.connected-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.chip { display: flex; align-items: center; gap: 5px; font-size: 8.5px; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid var(--border); padding: 3px 8px; opacity: 0.5; }
+.chip-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+/* App dock */
+.app-dock-wrap { margin-top: auto; padding: 12px 0 16px; }
+.dock-label { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.2; margin-bottom: 10px; }
+.app-dock { display: flex; gap: 10px; }
+.app-icon { width: 50px; height: 50px; border-radius: 14px; background: rgba(30,28,26,0.08); border: 1px solid rgba(30,28,26,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.app-icon-glyph { font-size: 18px; }
+.app-icon-label { font-size: 7px; opacity: 0.35; letter-spacing: 0.04em; }
+
+/* CHAT bubbles */
+.chat-area { display: flex; flex-direction: column; gap: 10px; padding: 14px 0 10px; }
+.chat-user { align-self: flex-end; background: var(--black); color: var(--white); padding: 8px 11px; font-size: 11.5px; line-height: 1.4; max-width: 85%; opacity: 0.9; }
+.chat-ai { font-size: 11.5px; opacity: 0.6; line-height: 1.55; max-width: 90%; padding-left: 9px; border-left: 2px solid rgba(30,28,26,0.15); }
+
+/* Boundary cards */
+.boundary-cards { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.b-card { flex: 1 1 calc(50% - 4px); min-width: 110px; border: 1px solid var(--black); background: var(--white); cursor: pointer; overflow: hidden; transition: opacity 0.1s; }
+.b-card:hover { opacity: 0.75; }
+.b-card-strip { height: 3px; }
+.b-card-strip.chase { background: var(--chase); }
+.b-card-strip.coned { background: var(--coned); }
+.b-card-strip.verizon { background: var(--verizon); }
+.b-card-body { padding: 9px 11px 11px; }
+.b-card-name { font-size: 7.5px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.38; margin-bottom: 4px; }
+.b-card-amount { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 3px; }
+.b-card-due { font-size: 8.5px; opacity: 0.38; }
+.b-card-tap { font-size: 8px; opacity: 0.25; margin-top: 6px; letter-spacing: 0.06em; }
+
+/* Surface Protocol card */
+.surface-card { border: 1px solid var(--black); background: var(--white); overflow: hidden; margin-top: 8px; }
+.surface-strip { height: 3px; }
+.surface-strip.chase { background: var(--chase); }
+.surface-brand-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px 7px; border-bottom: 1px solid var(--border); }
+.surface-brand-name { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.65; }
+.surface-protocol-tag { font-size: 7.5px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.28; border: 1px solid var(--border); padding: 1px 5px; }
+.surface-body { padding: 11px 12px; }
+.surface-acct { font-size: 9.5px; opacity: 0.38; margin-bottom: 11px; }
+.surface-figures { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 11px; }
+.surface-fig-label { font-size: 8px; opacity: 0.3; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 2px; }
+.surface-fig-val { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; }
+.surface-due { font-size: 9.5px; opacity: 0.4; padding: 9px 0; border-top: 1px solid var(--border); margin-bottom: 10px; }
+.surface-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+.s-btn { font-size: 9.5px; letter-spacing: 0.05em; padding: 6px 10px; border: 1px solid var(--black); background: transparent; font-family: var(--font); cursor: pointer; color: var(--black); transition: background 0.1s; }
+.s-btn.primary { background: var(--black); color: var(--white); }
+.s-btn:hover { opacity: 0.7; }
+
+/* Activity */
+.activity-section { margin-top: 10px; }
+.activity-label { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.28; margin-bottom: 7px; }
+.activity-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(30,28,26,0.06); }
+.activity-name { font-size: 10.5px; opacity: 0.6; }
+.activity-right { text-align: right; }
+.activity-amount { font-size: 10.5px; opacity: 0.7; }
+.activity-date { font-size: 8.5px; opacity: 0.3; }
+
+/* Success */
+.success-row { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
+.check { width: 15px; height: 15px; border-radius: 50%; border: 1px solid rgba(30,120,30,0.4); display: flex; align-items: center; justify-content: center; font-size: 8px; color: rgba(30,120,30,0.8); flex-shrink: 0; }
+.success-text { font-size: 10.5px; opacity: 0.65; }
+.success-conf { font-size: 9px; opacity: 0.32; line-height: 1.5; }
+
+/* Face ID overlay */
+.faceid-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(20,18,16,0.88); z-index: 30;
+  display: flex; align-items: flex-end; justify-content: center; padding-bottom: 52px;
+}
+.faceid-sheet {
+  background: #272420; color: #F0EDE6;
+  padding: 26px 22px 22px; width: calc(100% - 28px); text-align: center;
+  border-radius: 2px;
+}
+.faceid-ring {
+  width: 60px; height: 60px; border-radius: 50%;
+  border: 1.5px solid rgba(240,237,230,0.22);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.faceid-inner {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1.5px solid rgba(240,237,230,0.45);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; opacity: 0.45;
+}
+.faceid-amount { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 3px; }
+.faceid-to { font-size: 10px; opacity: 0.38; margin-bottom: 14px; }
+.faceid-hint { font-size: 9.5px; opacity: 0.3; letter-spacing: 0.04em; }
+
+/* MCP connection */
+.connect-card { border: 1px solid var(--black); background: var(--white); overflow: hidden; margin-top: 12px; }
+.connect-strip { height: 3px; background: var(--chase); }
+.connect-body { padding: 14px; }
+.connect-title { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; opacity: 0.85; }
+.connect-sub { font-size: 10px; opacity: 0.38; margin-bottom: 14px; }
+.perm-list { list-style: none; margin-bottom: 14px; }
+.perm-item { display: flex; gap: 7px; font-size: 10.5px; opacity: 0.5; padding: 3px 0; line-height: 1.4; }
+.perm-bullet { width: 3px; height: 3px; border-radius: 50%; background: var(--black); opacity: 0.4; margin-top: 5px; flex-shrink: 0; }
+.connect-note { font-size: 9px; opacity: 0.28; line-height: 1.5; margin-bottom: 14px; }
+.connect-cta { width: 100%; padding: 9px; background: var(--chase); color: white; border: none; font-family: var(--font); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+
+/* Sign in */
+.signin-body { padding: 14px; }
+.field-label { font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.3; margin-bottom: 4px; }
+.field-val { font-size: 12.5px; opacity: 0.45; padding-bottom: 5px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+.signin-cta { width: 100%; padding: 9px; background: var(--chase); color: white; border: none; font-family: var(--font); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; margin-bottom: 10px; }
+.signin-forgot { font-size: 9px; opacity: 0.25; text-align: center; }
+
+/* ── STEP DOTS + HINT ── */
+.phone-footer { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 16px; }
+.step-dots { display: flex; gap: 6px; }
+.step-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--black); opacity: 0.12; transition: opacity 0.2s; }
+.step-dot.active { opacity: 0.55; }
+.step-dot.done { opacity: 0.25; }
+.tap-hint { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.28; }
+
+/* ── ANNOTATION PANEL ── */
+.annotation-panel { flex: 1; min-width: 0; padding-top: 4px; }
+.annotation-header { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.28; margin-bottom: 24px; }
+.concept { border-top: 1px solid var(--border); padding: 16px 0; opacity: 0.22; transition: opacity 0.3s ease; }
+.concept.active { opacity: 1; }
+.concept-tag { font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; margin-bottom: 6px; }
+.concept-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 7px; opacity: 0.85; }
+.concept-desc { font-size: 11.5px; opacity: 0.52; line-height: 1.65; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 760px) {
+  .page { padding: 32px 20px 60px; }
+  .prototype-area { flex-direction: column; align-items: center; gap: 32px; }
+  .phone { width: 300px; height: 650px; border-radius: 44px; }
+  .annotation-panel { width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="proj-back" href="/">← martintrandesign.com</a>
+
+  <div class="proj-header">
+    <div class="proj-title">Surface OS</div>
+    <div class="proj-sub">A concept for the next generation of mobile operating systems — where apps are replaced by MCP-connected services, the interface is conversational by default, and authentication is inline. A few native apps remain for camera, games, and social.</div>
+    <div class="proj-meta">
+      <div class="proj-meta-item"><div class="label">Type</div><div class="val">UX Concept</div></div>
+      <div class="proj-meta-item"><div class="label">Year</div><div class="val">2025</div></div>
+      <div class="proj-meta-item"><div class="label">Format</div><div class="val">Interactive Prototype</div></div>
+    </div>
+  </div>
+
+  <div class="flow-tabs">
+    <div class="flow-tab active" id="tab-a" onclick="switchFlow('A')">Flow A — Bills due</div>
+    <div class="flow-tab" id="tab-b" onclick="switchFlow('B')">Flow B — Connect an MCP</div>
+  </div>
+
+  <div class="prototype-area">
+
+    <!-- PHONE -->
+    <div class="phone-wrap">
+      <div class="phone" id="phone" onclick="advance()">
+        <div class="dynamic-island"></div>
+
+        <!-- ── HOME ── -->
+        <div class="screen active" id="screen-home">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="screen-body">
+            <div class="home-date">Tuesday, May 31</div>
+            <div class="home-greeting">Good morning,<br>Martin.</div>
+            <div class="home-summary">3 bills due this week · 2 unread messages</div>
+            <div class="connected-chips">
+              <div class="chip"><div class="chip-dot" style="background:var(--chase)"></div>Chase</div>
+              <div class="chip"><div class="chip-dot" style="background:var(--coned)"></div>ConEd</div>
+              <div class="chip"><div class="chip-dot" style="background:var(--verizon)"></div>Verizon</div>
+            </div>
+            <div class="app-dock-wrap">
+              <div class="dock-label">Apps</div>
+              <div class="app-dock">
+                <div class="app-icon"><div class="app-icon-glyph">📷</div><div class="app-icon-label">Camera</div></div>
+                <div class="app-icon"><div class="app-icon-glyph" style="font-size:13px;font-weight:700;opacity:0.5;">IG</div><div class="app-icon-label">Instagram</div></div>
+                <div class="app-icon"><div class="app-icon-glyph">🎮</div><div class="app-icon-label">Games</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="os-input"><span class="os-input-text">Ask anything...</span><div class="os-send">↑</div></div>
+        </div>
+
+        <!-- ── A1: BILLS QUERY ── -->
+        <div class="screen" id="screen-a1">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="screen-body">
+            <div class="screen-scroll">
+              <div class="chat-area">
+                <div class="chat-user">What bills are due this week?</div>
+                <div class="chat-ai">Here are your upcoming bills due in the next 7 days across your connected services.</div>
+              </div>
+              <div class="boundary-cards">
+                <div class="b-card" onclick="event.stopPropagation();goToScreen('screen-a2')">
+                  <div class="b-card-strip chase"></div>
+                  <div class="b-card-body">
+                    <div class="b-card-name">Chase</div>
+                    <div class="b-card-amount">$127.50</div>
+                    <div class="b-card-due">Due Jun 1</div>
+                    <div class="b-card-tap">Tap to open ↗</div>
+                  </div>
+                </div>
+                <div class="b-card">
+                  <div class="b-card-strip coned"></div>
+                  <div class="b-card-body">
+                    <div class="b-card-name">ConEd</div>
+                    <div class="b-card-amount">$89.23</div>
+                    <div class="b-card-due">Due Jun 3</div>
+                  </div>
+                </div>
+                <div class="b-card">
+                  <div class="b-card-strip verizon"></div>
+                  <div class="b-card-body">
+                    <div class="b-card-name">Verizon</div>
+                    <div class="b-card-amount">$45.00</div>
+                    <div class="b-card-due">Due Jun 7</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="os-input"><span class="os-input-text">Ask anything...</span><div class="os-send">↑</div></div>
+        </div>
+
+        <!-- ── A2: CHASE BOUNDARY ── -->
+        <div class="screen" id="screen-a2">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="boundary-bar"><div class="boundary-dot"></div><span class="boundary-label">Chase Boundary · Active</span></div>
+          <div class="screen-body">
+            <div class="screen-scroll">
+              <div class="surface-card">
+                <div class="surface-strip chase"></div>
+                <div class="surface-brand-row"><span class="surface-brand-name">Chase</span><span class="surface-protocol-tag">Surface Protocol</span></div>
+                <div class="surface-body">
+                  <div class="surface-acct">Freedom Unlimited ···4729</div>
+                  <div class="surface-figures">
+                    <div><div class="surface-fig-label">Min. due</div><div class="surface-fig-val">$127.50</div></div>
+                    <div><div class="surface-fig-label">Statement bal.</div><div class="surface-fig-val">$2,847.33</div></div>
+                  </div>
+                  <div class="surface-due">Due June 1 · 6 days remaining</div>
+                  <div class="surface-actions">
+                    <button class="s-btn primary" onclick="event.stopPropagation();goToScreen('screen-a3')">Pay $127.50</button>
+                    <button class="s-btn" onclick="event.stopPropagation()">View all</button>
+                  </div>
+                </div>
+              </div>
+              <div class="activity-section">
+                <div class="activity-label">Recent activity</div>
+                <div class="activity-row"><span class="activity-name">Whole Foods Market</span><div class="activity-right"><div class="activity-amount">−$67.43</div><div class="activity-date">May 29</div></div></div>
+                <div class="activity-row"><span class="activity-name">Netflix</span><div class="activity-right"><div class="activity-amount">−$15.99</div><div class="activity-date">May 28</div></div></div>
+                <div class="activity-row"><span class="activity-name">Trader Joe's</span><div class="activity-right"><div class="activity-amount">−$44.12</div><div class="activity-date">May 26</div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="os-input"><span class="os-input-text">Ask Chase...</span><div class="os-send">↑</div></div>
+        </div>
+
+        <!-- ── A3: FACE ID ── -->
+        <div class="screen" id="screen-a3">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="boundary-bar"><div class="boundary-dot"></div><span class="boundary-label">Chase Boundary · Active</span></div>
+          <div class="screen-body" style="opacity:0.25;">
+            <div class="surface-card" style="margin-top:8px;">
+              <div class="surface-strip chase"></div>
+              <div class="surface-brand-row"><span class="surface-brand-name">Chase</span><span class="surface-protocol-tag">Surface Protocol</span></div>
+              <div class="surface-body">
+                <div class="surface-acct">Freedom Unlimited ···4729</div>
+                <div class="surface-figures">
+                  <div><div class="surface-fig-label">Min. due</div><div class="surface-fig-val">$127.50</div></div>
+                  <div><div class="surface-fig-label">Statement bal.</div><div class="surface-fig-val">$2,847.33</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="faceid-overlay" onclick="event.stopPropagation();goToScreen('screen-a4')">
+            <div class="faceid-sheet">
+              <div class="faceid-ring"><div class="faceid-inner">◉</div></div>
+              <div class="faceid-amount">$127.50</div>
+              <div class="faceid-to">Chase Freedom Unlimited ···4729</div>
+              <div class="faceid-hint">Look at iPhone to confirm</div>
+            </div>
+          </div>
+          <div class="os-input" style="position:relative;z-index:40;background:#1A1816;border-top-color:rgba(255,255,255,0.08);">
+            <span class="os-input-text" style="color:#F0EDE6;">Ask Chase...</span>
+            <div class="os-send" style="border-color:rgba(255,255,255,0.2);color:#F0EDE6;">↑</div>
+          </div>
+        </div>
+
+        <!-- ── A4: CONFIRMED ── -->
+        <div class="screen" id="screen-a4">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="boundary-bar"><div class="boundary-dot"></div><span class="boundary-label">Chase Boundary · Active</span></div>
+          <div class="screen-body">
+            <div class="surface-card" style="margin-top:8px;">
+              <div class="surface-strip chase"></div>
+              <div class="surface-brand-row"><span class="surface-brand-name">Chase</span><span class="surface-protocol-tag">Surface Protocol</span></div>
+              <div class="surface-body">
+                <div class="surface-acct">Freedom Unlimited ···4729</div>
+                <div class="success-row"><div class="check">✓</div><span class="success-text">Payment of $127.50 scheduled</span></div>
+                <div class="success-conf">Confirmation #CH-29847 · Processing in 1–2 business days</div>
+                <div class="surface-figures" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);margin-bottom:0;">
+                  <div><div class="surface-fig-label">Min. due</div><div class="surface-fig-val">$0.00</div></div>
+                  <div><div class="surface-fig-label">Statement bal.</div><div class="surface-fig-val">$2,719.83</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="os-input"><span class="os-input-text">Ask Chase...</span><div class="os-send">↑</div></div>
+        </div>
+
+        <!-- ── B1: NOT CONNECTED ── -->
+        <div class="screen" id="screen-b1">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="screen-body">
+            <div class="chat-area">
+              <div class="chat-user">Check my Chase balance</div>
+              <div class="chat-ai">Chase isn't connected yet. Connect it to check balances and manage payments directly from here.</div>
+              <div style="margin-top:4px;">
+                <button class="s-btn primary" onclick="event.stopPropagation();goToScreen('screen-b2')" style="font-size:10px;letter-spacing:0.06em;">Connect Chase</button>
+              </div>
+            </div>
+          </div>
+          <div class="os-input"><span class="os-input-text">Ask anything...</span><div class="os-send">↑</div></div>
+        </div>
+
+        <!-- ── B2: CONNECTION CONFIRMATION ── -->
+        <div class="screen" id="screen-b2">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="screen-body">
+            <div class="screen-scroll">
+              <div class="connect-card" style="margin-top:8px;">
+                <div class="connect-strip"></div>
+                <div class="connect-body">
+                  <div class="connect-title">Connect Chase to Surface OS</div>
+                  <div class="connect-sub">Chase will be able to:</div>
+                  <ul class="perm-list">
+                    <li class="perm-item"><div class="perm-bullet"></div>Share account balances and transaction history</li>
+                    <li class="perm-item"><div class="perm-bullet"></div>Accept and confirm payment requests</li>
+                    <li class="perm-item"><div class="perm-bullet"></div>Respond to queries about your accounts</li>
+                  </ul>
+                  <div class="connect-note">You can disconnect anytime in Settings › Connections. Surface OS does not store your Chase credentials.</div>
+                  <button class="connect-cta" onclick="event.stopPropagation();goToScreen('screen-b3')">Continue to Chase Sign In</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── B3: SIGN IN ── -->
+        <div class="screen" id="screen-b3">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="screen-body">
+            <div class="connect-card" style="margin-top:8px;">
+              <div class="connect-strip"></div>
+              <div class="signin-body">
+                <div class="connect-title">Sign in to Chase</div>
+                <div class="connect-sub" style="margin-bottom:20px;">Your credentials are never stored by Surface OS</div>
+                <div class="field-label">Username</div>
+                <div class="field-val">martintran</div>
+                <div class="field-label">Password</div>
+                <div class="field-val">••••••••••</div>
+                <button class="signin-cta" onclick="event.stopPropagation();goToScreen('screen-b4')">Sign In</button>
+                <div class="signin-forgot">Forgot username or password?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── B4: CONNECTED ── -->
+        <div class="screen" id="screen-b4">
+          <div class="status-bar"><span class="status-time">9:41</span><div class="status-right"><span class="status-icon">●●●</span><span class="status-icon">5G</span><span class="status-icon">████</span></div></div>
+          <div class="boundary-bar"><div class="boundary-dot"></div><span class="boundary-label">Chase Boundary · Just connected</span></div>
+          <div class="screen-body">
+            <div class="surface-card" style="margin-top:8px;">
+              <div class="surface-strip chase"></div>
+              <div class="surface-brand-row"><span class="surface-brand-name">Chase</span><span class="surface-protocol-tag">Surface Protocol</span></div>
+              <div class="surface-body">
+                <div class="surface-acct">Freedom Unlimited ···4729</div>
+                <div class="success-row"><div class="check">✓</div><span class="success-text">Chase is now connected</span></div>
+                <div class="surface-figures" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);margin-bottom:0;">
+                  <div><div class="surface-fig-label">Available credit</div><div class="surface-fig-val">$12,543</div></div>
+                  <div><div class="surface-fig-label">Balance</div><div class="surface-fig-val">$2,847.33</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="os-input"><span class="os-input-text">Ask Chase...</span><div class="os-send">↑</div></div>
+        </div>
+
+      </div><!-- .phone -->
+
+      <div class="phone-footer">
+        <div class="step-dots" id="step-dots"></div>
+        <div class="tap-hint" id="tap-hint">Tap phone to advance</div>
+      </div>
+    </div><!-- .phone-wrap -->
+
+    <!-- ANNOTATION PANEL -->
+    <div class="annotation-panel">
+      <div class="annotation-header">Design concepts</div>
+      <div id="concepts"></div>
+    </div>
+
+  </div><!-- .prototype-area -->
+</div><!-- .page -->
+
+<script>
+const FLOWS = {
+  A: {
+    screens: ['screen-home','screen-a1','screen-a2','screen-a3','screen-a4'],
+    concepts: [
+      {
+        tag: 'Concept 01',
+        title: 'Conversational OS',
+        desc: 'The home screen is ambient and conversational. Apps are replaced by MCP-connected services. A small native dock remains for camera, games, and social — experiences where direct app control still makes sense.'
+      },
+      {
+        tag: 'Concept 02 · Intent-driven MCP call',
+        title: 'Ask once, all services reply',
+        desc: 'The OS detects which connected MCPs are relevant to a query and assembles a response across all of them — no app switching. Three services surface in parallel as boundary cards.'
+      },
+      {
+        tag: 'Concept 03 · Surface Protocol',
+        title: 'Boundary cards + branded surfaces',
+        desc: 'MCP hosts configure their card using a shared OS component library — Surface Protocol. Brand strip, data fields, and actions are defined by the host. Tapping a card enters that service\'s boundary, shifting the input context.'
+      },
+      {
+        tag: 'Concept 04 · Tiered Auth',
+        title: 'Inline authentication',
+        desc: 'Viewing balances and data is free. Transactional actions — paying a bill, transferring funds — trigger Face ID inline, without switching apps or leaving the boundary. The auth level is determined by the action, not the app.'
+      },
+      {
+        tag: 'Concept 05 · Boundary Memory',
+        title: 'Resolution in context',
+        desc: 'Confirmation lives inside the Chase boundary. Context, confirmation numbers, and history persist across sessions. The boundary remembers — future interactions with Chase pick up where this one left off.'
+      }
+    ]
+  },
+  B: {
+    screens: ['screen-home','screen-b1','screen-b2','screen-b3','screen-b4'],
+    concepts: [
+      {
+        tag: 'Concept 01',
+        title: 'Conversational OS',
+        desc: 'The home screen is ambient and conversational. Apps are replaced by MCP-connected services. A small native dock remains for camera, games, and social — experiences where direct app control still makes sense.'
+      },
+      {
+        tag: 'Concept 02 · MCP as App Install',
+        title: 'Connect naturally, in conversation',
+        desc: 'Connecting an MCP is the modern equivalent of installing an app — but it happens naturally in conversation, not through a store. The AI surfaces the connection prompt at the moment of intent.'
+      },
+      {
+        tag: 'Concept 03 · Trust Layer',
+        title: 'Branding + explicit permissions',
+        desc: 'Before any connection is made, the host\'s branding is shown alongside a clear list of what they\'re asking for. Permissions are scoped and declared — no ambiguity about what\'s being authorized.'
+      },
+      {
+        tag: 'Concept 04 · Auth in Context',
+        title: 'Sign in once, in the OS layer',
+        desc: 'Authentication happens inside the OS conversation layer — no redirects, no separate app. Surface OS receives a scoped token and never stores your credentials. The session is ephemeral; the connection is persistent.'
+      },
+      {
+        tag: 'Concept 05 · Persistent Boundary',
+        title: 'Boundary created',
+        desc: 'Once connected, Chase becomes a persistent boundary in your OS. Context, preferences, and history accumulate over time within it. The input bar shifts to "Ask Chase..." — you\'re now inside the boundary.'
+      }
+    ]
+  }
+};
+
+let currentFlow = 'A';
+let currentStep = 0;
+
+function switchFlow(f) {
+  currentFlow = f;
+  currentStep = 0;
+  document.getElementById('tab-a').classList.toggle('active', f === 'A');
+  document.getElementById('tab-b').classList.toggle('active', f === 'B');
+  render();
+}
+
+function goToScreen(id) {
+  const idx = FLOWS[currentFlow].screens.indexOf(id);
+  if (idx !== -1) { currentStep = idx; render(); }
+}
+
+function advance() {
+  const len = FLOWS[currentFlow].screens.length;
+  if (currentStep < len - 1) { currentStep++; render(); }
+}
+
+function render() {
+  const flow = FLOWS[currentFlow];
+  const isLast = currentStep === flow.screens.length - 1;
+
+  // Screens
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(flow.screens[currentStep]).classList.add('active');
+
+  // Dots
+  document.getElementById('step-dots').innerHTML = flow.screens.map((_, i) =>
+    `<div class="step-dot ${i === currentStep ? 'active' : i < currentStep ? 'done' : ''}"></div>`
+  ).join('');
+
+  // Hint
+  document.getElementById('tap-hint').textContent = isLast ? 'End of flow — switch tabs to restart' : 'Tap phone to advance';
+
+  // Concepts
+  document.getElementById('concepts').innerHTML = flow.concepts.map((c, i) => `
+    <div class="concept ${i === currentStep ? 'active' : ''}">
+      <div class="concept-tag">${c.tag}</div>
+      <div class="concept-title">${c.title}</div>
+      <div class="concept-desc">${c.desc}</div>
+    </div>
+  `).join('');
+}
+
+render();
+</script>
+</body>
+</html>
